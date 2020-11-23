@@ -30,20 +30,13 @@ def main():
 
     # GAME LOOP
     while True:
-        check_for_quit()
+        for event in pygame.event.get(pygame.KEYDOWN):
+            if event.type == pygame.QUIT:
+                terminate()
+            if event.key == pygame.K_ESCAPE:
+                terminate()
         pygame.display.update()
         FPS_CLOCK.tick(FPS)
-
-
-def check_for_quit():
-    """Checks if the user pressed either the X or ESCAPE if so calls terminate()"""
-    if pygame.event.get(pygame.QUIT):
-        terminate()
-
-    for event in pygame.event.get(pygame.KEYDOWN):
-        if event.key == pygame.K_ESCAPE:
-            terminate()
-        pygame.event.post(event)
 
 
 def terminate():
