@@ -8,11 +8,12 @@ import sys
 
 
 class Game_state():
-    def __init__(self, rooms, drone, obstacles, spawners):
-        self.rooms = rooms
+    def __init__(self, room=None, drone=None, obstacles=None, spawners=None, DISPLAY_SURFACE=None):
+        self.room = room
         self.drone = drone
         self.obstacles = obstacles
         self.spawners = spawners
+        self.DISPLAY_SURFACE = DISPLAY_SURFACE
 
 
 def main():
@@ -38,13 +39,23 @@ def main():
     # CAPTION
     pygame.display.set_caption("Drone guy")
 
+    # CREATION OF GAME_STATE INSTANCE
+    state = Game_state("menu", None, None, None, DISP_SURF)
+
     # GAME LOOP
     while True:
+        # CHECKING FOR QUIT
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 terminate()
+
+        # TEST – TEMPORARY
+        if state.room == "menu":
+            menu.show_menu(state)
+
+        # UPDATING THE DISPLAY
         pygame.display.update()
         FPS_CLOCK.tick(FPS)
 
