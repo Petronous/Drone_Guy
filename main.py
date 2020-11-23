@@ -48,14 +48,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                terminate()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_ESCAPE:
+                    terminate()
 
-        # TEST – TEMPORARY
-        if state.room == "menu":
-            menu.show_menu(state)
-
-        # UPDATING THE DISPLAY
         pygame.display.update()
         FPS_CLOCK.tick(FPS)
 
