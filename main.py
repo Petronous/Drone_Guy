@@ -8,12 +8,13 @@ import sys
 
 
 class Game_state():
-    def __init__(self, room=None, drone=None, obstacles=None, spawners=None, DISPLAY_SURFACE=None):
+    def __init__(self, room=None, drone=None, obstacles=None, spawners=None, DISPLAY_SURFACE=None, lvl_list=None):
         self.room = room
         self.drone = drone
         self.obstacles = obstacles
         self.spawners = spawners
         self.DISPLAY_SURFACE = DISPLAY_SURFACE
+        self.lvl_list = lvl_list
 
 
 def main():
