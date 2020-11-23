@@ -1,3 +1,7 @@
+"""
+REQUIREMENTS:
+    – a list of all clickable lvl rects (probably from graphics.py after they've been drawn)
+"""
 import pygame
 pygame.init()
 
