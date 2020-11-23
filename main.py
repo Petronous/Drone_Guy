@@ -19,11 +19,13 @@ def main():
 
     # DISPLAY SURFACE
     # WIDTH AND HEIGHT
-    WIN_W = 800
-    WIN_H = 600
+    DISP_INFO = pygame.display.Info()
+    WIN_W = DISP_INFO.current_w - 100
+    WIN_H = DISP_INFO.current_h - 100
 
     # INIT
-    DISP_SURF = pygame.display.set_mode((WIN_W, WIN_H))
+    DISP_SURF = pygame.display.set_mode(
+        (WIN_W, WIN_H), pygame.RESIZABLE)
 
     # CAPTION
     pygame.display.set_caption("Drone guy")
