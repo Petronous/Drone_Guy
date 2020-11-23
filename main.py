@@ -7,6 +7,14 @@ import pygame
 import sys
 
 
+class Game_state():
+    def __init__(self, rooms, drone, obstacles, spawners):
+        self.rooms = rooms
+        self.drone = drone
+        self.obstacles = obstacles
+        self.spawners = spawners
+
+
 def main():
     """Main function of the game, contains the game loop and initial setup"""
     # PYGAME INIT
@@ -32,10 +40,10 @@ def main():
 
     # GAME LOOP
     while True:
-        for event in pygame.event.get(pygame.KEYDOWN):
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
-            if event.key == pygame.K_ESCAPE:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 terminate()
         pygame.display.update()
         FPS_CLOCK.tick(FPS)
