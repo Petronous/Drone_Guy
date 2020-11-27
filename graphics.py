@@ -3,6 +3,7 @@ pygame.init()
 
 
 class Colors():
+    """Basic colors"""
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     GRAY = (100, 100, 100)
@@ -12,6 +13,7 @@ class Colors():
 
 
 class Fonts():
+    """Basic fonts"""
     BASE_FONT_SIZE = 20
     TITLE_FONT_SIZE = 4 * BASE_FONT_SIZE
     BASIC_FONT = pygame.font.Font('freesansbold.ttf', BASE_FONT_SIZE)
@@ -19,10 +21,12 @@ class Fonts():
 
 
 class Menu():
+    """Class to be passed to handle_input() in menu.py for lvl selection"""
     LVL_RECTS = []
 
 
 def draw_menu(game_state):
+    """Scrappy and sloppy basic graphics for lvl select aka menu"""
     # GET WINDOW DIMENSIONS
     WIN_W, WIN_H = game_state.DISPLAY_SURFACE.get_size()
 
