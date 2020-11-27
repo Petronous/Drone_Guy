@@ -1,20 +1,10 @@
-"""
-REQUIREMENTS:
-    – a list of all clickable lvl rects (probably from graphics.py after they've been drawn)
-"""
 import pygame
-pygame.init()
+from graphics import Menu
 
 
-def show_menu(game_state):
-    """
-    selected = False
-    while not selected:
-        for event in pygame.event.get(pygame.MOUSEBUTTONUP):
-            mouse_pos = pygame.mouse.get_pos()
-            for lvl_rect in lvl_rects:
-                if lvl_rect.colidepoint(mouse_pos):
-                    game_state.room = "lvl"
-                    selected = True
-    """
-    pass
+def handle_input(game_state):
+    # RETURN THE INDEX OF THE LVL => 0 = LVL 1
+    for event in pygame.event.get(pygame.MOUSEBUTTONUP):
+        for lvl_rect in Menu.LVL_RECTS:
+            if lvl_rect.collidepoint(pygame.mouse.get_pos()):
+                return Menu.LVL_RECTS.index(lvl_rect)
