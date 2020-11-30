@@ -16,6 +16,7 @@ class Game_state():
     spawners = []
     lvl_list = list(range(20))
     lvl_rects = []
+    score = 0
 
 
 def main():

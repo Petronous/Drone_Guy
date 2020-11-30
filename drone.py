@@ -41,26 +41,24 @@ class Drone(pygame.sprite.Sprite):
 
         self.pos_x += self.vel[0]
         self.pos_y += self.vel[1]
-        self.rect.center = (self.pos_x, self.pos_y)
+        self.rect.center = (int(self.pos_x), int(self.pos_y))
 
     def collide(self, other):
         '''
         Handles collision
         '''
-        left_x, top_y = other.topleft
-        right_x, bottom_y = other.bottomright
+        dist_x, drc_x = get_bigger(other.rect.left - self.rect.right, self.rect.left - other.rect.right)
+        dist_y, drc_y = get_bigger(other.rect.top - self.rect.bottom, self.rect.top - other.rect.bottom)
 
-        dist_x, drc_x = get_bigger(left_x - self.pos_x, self.pos_x - right_x)
-        dist_y, drc_y = get_bigger(top_y - self.pos_y, self.pos_y - bottom_y)
-        if dist_x > 0 and dist_y > 0:
-            dist, x_or_y = get_bigger(dist_x, dist_y)
-        # will actually be the index of the smaller one if we take (x,y)
+        dist, x_or_y = get_bigger(dist_y, dist_x)
         x_or_y = (x_or_y + 1) // 2
         drcs = (drc_x, drc_y)
-        vel = self.vel[x_or_y]*drcs[x_or_y]
 
-        if vel > 0:
+        impact_vel = self.vel[x_or_y]*drcs[x_or_y]
+        self.vel[(x_or_y+1)%2] *= 0.9  # To simulate friction
+
+        if impact_vel > 0:
             # check for damage if bump
-            if vel > self.durability:
-                self.health -=  vel - self.durability
+            if impact_vel > self.durability:
+                self.health -=  impact_vel - self.durability
             self.self.vel[x_or_y] = 0
