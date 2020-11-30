@@ -74,7 +74,7 @@ def handle_key_press():
         # RETURN VALUE IS LVL NUMBER CHOSEN - 1 OR NONE IF NO LVL WAS CHOSEN
         choice = menu.handle_input(Game_state)
         # RUN CHOSEN LVL – TODO
-        if choice:
+        if choice is not None:
             Game_state.room = "lvl"
             graphics.draw_level(Game_state.lvl_list[choice])
 
