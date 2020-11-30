@@ -1,4 +1,6 @@
 import pygame
+from game_state import Game_state
+from level import Rect_sprite
 
 if not pygame.get_init():
     pygame.init()
@@ -11,14 +13,6 @@ class Text(pygame.sprite.Sprite):
         super().__init__()
         self.image = font.render(
             text, True, color)
-        self.rect = self.image.get_rect()
-
-
-class Rect_sprite(pygame.sprite.Sprite):
-    def __init__(self, width, height, color):
-        super().__init__()
-        self.image = pygame.Surface((width, height))
-        self.image.fill(Colors.LVL_RECT_COLOR)
         self.rect = self.image.get_rect()
 
 
@@ -47,7 +41,7 @@ class Menu():
     LVL_RECTS = []
 
 
-def draw_menu(Game_state):
+def draw_menu():
     """Scrappy and sloppy basic graphics for lvl select aka menu"""
     # GET WINDOW DIMENSIONS
     WIN_W, WIN_H = Game_state.DISP_SURF.get_size()

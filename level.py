@@ -1,5 +1,11 @@
 import pygame
-from graphics import Rect_sprite
+
+class Rect_sprite(pygame.sprite.Sprite):
+    def __init__(self, width, height, color):
+        super().__init__()
+        self.image = pygame.Surface((width, height))
+        self.image.fill(color)
+        self.rect = self.image.get_rect()
 
 
 class Level():
@@ -10,8 +16,8 @@ class Level():
 
 
 class Block(Rect_sprite):
-    def __init__(self, x, y, width, height, group):
-        super().__init__(width, height, (100, 100, 100))
+    def __init__(self, x, y, width, height, group, color):
+        super().__init__(width, height, color)
         self.pos = (x, y)
         group.add(self)
 
