@@ -15,11 +15,12 @@ class Text(pygame.sprite.Sprite):
 
 
 class Rect_sprite(pygame.sprite.Sprite):
-    def __init__(self, width, height, color):
+    def __init__(self, x=0, y=0, width=0, height=0, color=0):
         super().__init__()
         self.image = pygame.Surface((width, height))
-        self.image.fill(Colors.LVL_RECT_COLOR)
+        self.image.fill(color)
         self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
 
 
 class Colors():
@@ -88,7 +89,8 @@ def draw_menu(Game_state):
             lvl_rect_y += LVL_RECT_H + GAP_H
             lvl_rect_x = X_MARGIN
 
-        lvl_rect = Rect_sprite(LVL_RECT_W, LVL_RECT_H, Colors.LVL_RECT_COLOR)
+        lvl_rect = Rect_sprite(lvl_rect_x, lvl_rect_y,
+                               LVL_RECT_W, LVL_RECT_H, Colors.LVL_RECT_COLOR)
         lvl_rect.rect.topleft = (lvl_rect_x, lvl_rect_y)
         MENU_GRP.add(lvl_rect)
 
