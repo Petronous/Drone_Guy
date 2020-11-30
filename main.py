@@ -14,8 +14,9 @@ class Game_state():
     drone = None
     obstacles = []
     spawners = []
-    lvl_list = list(range(20))
+    lvl_list = level.lvl_list
     lvl_rects = []
+    curr_lvl = None
     score = 0
 
 
@@ -76,10 +77,11 @@ def handle_key_press():
         # RUN CHOSEN LVL – TODO
         if choice is not None:
             Game_state.room = "lvl"
+            Game_state.curr_lvl = Game_state.lvl_list[choice]
             graphics.draw_level(Game_state.lvl_list[choice])
 
     if Game_state.room == "lvl":
-        # TODO
+        # Game_state.curr_lvl.update()
         pass
 
 

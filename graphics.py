@@ -75,7 +75,7 @@ def draw_menu(Game_state):
     LVL_RECT_W = (WIN_W - 2 * X_MARGIN - (LVL_COUNT - 1)
                   * GAP_W) // RECTS_PER_ROW
     LVL_RECT_H = (WIN_H - 2 * Y_MARGIN - (LVL_COUNT - 1)
-                  * GAP_H) // (LVL_COUNT // RECTS_PER_ROW)
+                  * GAP_H) // (LVL_COUNT + 1 // RECTS_PER_ROW)
 
     lvl_rect_x, lvl_rect_y = X_MARGIN, Y_MARGIN
 
@@ -100,6 +100,6 @@ def draw_menu(Game_state):
     MENU_GRP.draw(Game_state.DISP_SURF)
 
 
-def draw_level(level):
+def draw_level(Game_state):
     # TODO
     pass
