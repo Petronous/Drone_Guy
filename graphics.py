@@ -1,4 +1,6 @@
 import pygame
+from constants import Game_state, Colors
+from level import Rect_sprite
 
 if not pygame.get_init():
     pygame.init()
@@ -14,25 +16,7 @@ class Text(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
-class Rect_sprite(pygame.sprite.Sprite):
-    def __init__(self, x=0, y=0, width=0, height=0, color=0):
-        super().__init__()
-        self.image = pygame.Surface((width, height))
-        self.image.fill(color)
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
 
-
-class Colors():
-    """Contains used colors"""
-    WHITE = (255, 255, 255)
-    BLACK = (0, 0, 0)
-    GRAY = (100, 100, 100)
-    GREEN = (0, 255, 0)
-    BG_COLOR = BLACK
-    LVL_RECT_COLOR = GREEN
-    TEXT_COLOR = WHITE
-    DRONE_COLOR = GRAY
 
 
 class Fonts():
@@ -48,7 +32,7 @@ class Menu():
     LVL_RECTS = []
 
 
-def draw_menu(Game_state):
+def draw_menu():
     """Scrappy and sloppy basic graphics for lvl select aka menu"""
     # GET WINDOW DIMENSIONS
     WIN_W, WIN_H = Game_state.DISP_SURF.get_size()
@@ -89,8 +73,7 @@ def draw_menu(Game_state):
             lvl_rect_y += LVL_RECT_H + GAP_H
             lvl_rect_x = X_MARGIN
 
-        lvl_rect = Rect_sprite(lvl_rect_x, lvl_rect_y,
-                               LVL_RECT_W, LVL_RECT_H, Colors.LVL_RECT_COLOR)
+        lvl_rect = Rect_sprite(LVL_RECT_W, LVL_RECT_H, Colors.LVL_RECT_COLOR)
         lvl_rect.rect.topleft = (lvl_rect_x, lvl_rect_y)
         MENU_GRP.add(lvl_rect)
 
