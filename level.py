@@ -1,5 +1,5 @@
 import pygame
-from graphics import Rect_sprite
+from graphics import Rect_sprite, Colors
 
 
 class Level():
@@ -11,9 +11,13 @@ class Level():
 
 class Block(Rect_sprite):
     def __init__(self, x, y, width, height, group):
-        super().__init__(width, height, (100, 100, 100))
-        self.pos = (x, y)
+        super().__init__(x, y, width, height, (100, 100, 100))
         group.add(self)
 
-    def draw(surf):
+    def draw(self, surf):
         surf.blit(self.image, self.rect)
+
+
+class Spawner(Rect_sprite):
+    def __init__(self, width, height, color):
+        super().__init__(width, height, Colors.BG_COLOR)
