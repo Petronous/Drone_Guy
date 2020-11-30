@@ -51,6 +51,8 @@ def draw_menu(Game_state):
     # GET WINDOW DIMENSIONS
     WIN_W, WIN_H = Game_state.DISP_SURF.get_size()
 
+    Game_state.lvl_rects = []
+
     # FILL THE WINDOW WITH BG_COLOR
     Game_state.DISP_SURF.fill(Colors.BG_COLOR)
 
