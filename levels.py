@@ -5,7 +5,9 @@ from level import *
 test = Level()
 
 # BLOCKS
-test.blocks.append(Block(100, 50, 30, 200, test.group))
+test.blocks.append(Block(935, 0, 50, 650, test.group))
+test.blocks.append(Block(400, 650, 1300, 50, test.group))
+
 
 
 lvl_list = []
