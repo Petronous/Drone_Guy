@@ -102,7 +102,7 @@ def draw_menu(Game_state):
 
 
 def draw_drone(drone):
-    pygame.draw.rect(DISP_SURF, DRONE_COLOR, drone.rect)
+    pygame.draw.rect(Game_state.DISP_SURF, Colors.DRONE_COLOR, drone.rect)
 
 
 def draw_level(level):
