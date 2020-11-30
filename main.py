@@ -78,7 +78,7 @@ def handle_key_press():
         if choice is not None:
             Game_state.room = "lvl"
             Game_state.curr_lvl = Game_state.lvl_list[choice]
-            graphics.draw_level(Game_state.lvl_list[choice])
+            graphics.draw_level(Game_state, Game_state.curr_lvl, drone.Drone())
 
     if Game_state.room == "lvl":
         # Game_state.curr_lvl.update()
