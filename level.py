@@ -10,17 +10,19 @@ class Level():
 
 
 class Block(Rect_sprite):
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y, width, height, group):
         super().__init__(width, height, (100, 100, 100))
         self.pos = (x, y)
+        group.add(self)
 
-
-# BLOCKS
-test_blocks = []
-test_blocks.append(Block(100, 50, 30, 200))
+    def draw(surf):
+        surf.blit(self.image, self.rect)
 
 # LVL
-test = Level(test_blocks)
+test = Level()
+
+# BLOCKS
+test.blocks.append(Block(100, 50, 30, 200, test.group))
 
 
 lvl_list = []
