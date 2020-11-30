@@ -31,6 +31,7 @@ class Colors():
     BG_COLOR = BLACK
     LVL_RECT_COLOR = GREEN
     TEXT_COLOR = WHITE
+    DRONE_COLOR = GRAY
 
 
 class Fonts():
@@ -98,6 +99,10 @@ def draw_menu(Game_state):
         Game_state.lvl_rects.append(lvl_rect)
 
     MENU_GRP.draw(Game_state.DISP_SURF)
+
+
+def draw_drone(drone):
+    pygame.draw.rect(DISP_SURF, DRONE_COLOR, drone.rect)
 
 
 def draw_level(level):
