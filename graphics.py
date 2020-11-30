@@ -105,6 +105,6 @@ def draw_drone(drone):
     pygame.draw.rect(Game_state.DISP_SURF, Colors.DRONE_COLOR, drone.rect)
 
 
-def draw_level(level):
-    # TODO
-    pass
+def draw_level(level, drone):
+    level.group.draw()
+    draw_drone(drone)
