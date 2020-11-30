@@ -65,7 +65,7 @@ def handle_key_press():
         graphics.draw_menu()
         # RETURN VALUE IS LVL NUMBER CHOSEN - 1 OR NONE IF NO LVL WAS CHOSEN
         choice = menu.handle_input()
-        # RUN CHOSEN LVL – TODO
+        # RUN CHOSEN LVL
         if choice is not None:
             Game_state.room = "lvl"
             Game_state.curr_lvl = Game_state.lvl_list[choice]
@@ -75,16 +75,24 @@ def handle_key_press():
         # HANDLE EVENTS
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP: Game_state.drone.control_v =    -1
-                if event.key == pygame.K_DOWN: Game_state.drone.control_v =   1
-                if event.key == pygame.K_LEFT: Game_state.drone.control_h =  -1
-                if event.key == pygame.K_RIGHT: Game_state.drone.control_h =  1
+                if event.key == pygame.K_UP:
+                    Game_state.drone.control_v = -1
+                if event.key == pygame.K_DOWN:
+                    Game_state.drone.control_v = 1
+                if event.key == pygame.K_LEFT:
+                    Game_state.drone.control_h = -1
+                if event.key == pygame.K_RIGHT:
+                    Game_state.drone.control_h = 1
 
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP: Game_state.drone.control_v =    0
-                if event.key == pygame.K_DOWN: Game_state.drone.control_v =  0
-                if event.key == pygame.K_LEFT: Game_state.drone.control_h =  0
-                if event.key == pygame.K_RIGHT: Game_state.drone.control_h = 0
+                if event.key == pygame.K_UP:
+                    Game_state.drone.control_v = 0
+                if event.key == pygame.K_DOWN:
+                    Game_state.drone.control_v = 0
+                if event.key == pygame.K_LEFT:
+                    Game_state.drone.control_h = 0
+                if event.key == pygame.K_RIGHT:
+                    Game_state.drone.control_h = 0
 
             else:
                 pygame.event.post(event)

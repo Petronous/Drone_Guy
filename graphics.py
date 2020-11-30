@@ -16,9 +16,6 @@ class Text(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
-
-
-
 class Fonts():
     """Basic fonts"""
     BASE_FONT_SIZE = 20
