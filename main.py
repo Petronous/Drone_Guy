@@ -3,6 +3,7 @@ import sys
 
 import graphics
 import level
+import levels
 import drone
 import menu
 
@@ -14,7 +15,7 @@ class Game_state():
     drone = None
     obstacles = []
     spawners = []
-    lvl_list = level.lvl_list
+    lvl_list = levels.lvl_list
     lvl_rects = []
     curr_lvl = None
     score = 0

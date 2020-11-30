@@ -17,13 +17,3 @@ class Block(Rect_sprite):
 
     def draw(surf):
         surf.blit(self.image, self.rect)
-
-# LVL
-test = Level()
-
-# BLOCKS
-test.blocks.append(Block(100, 50, 30, 200, test.group))
-
-
-lvl_list = []
-lvl_list.append(test)
