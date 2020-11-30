@@ -6,19 +6,7 @@ import level
 import levels
 import drone
 import menu
-
-
-class Game_state():
-    """Most of the info any other file would need to use from main.py"""
-    DISP_SURF = None
-    room = "menu"
-    drone = None
-    obstacles = []
-    spawners = []
-    lvl_list = levels.lvl_list
-    lvl_rects = []
-    curr_lvl = None
-    score = 0
+from game_state import Game_state
 
 
 def main():
@@ -72,9 +60,9 @@ def check_for_quit():
 def handle_key_press():
     """Handles input from user depending on Game_state.room"""
     if Game_state.room == "menu":
-        graphics.draw_menu(Game_state)
+        graphics.draw_menu()
         # RETURN VALUE IS LVL NUMBER CHOSEN - 1 OR NONE IF NO LVL WAS CHOSEN
-        choice = menu.handle_input(Game_state)
+        choice = menu.handle_input()
         # RUN CHOSEN LVL – TODO
         if choice is not None:
             Game_state.room = "lvl"
