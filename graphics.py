@@ -1,5 +1,5 @@
 import pygame
-from game_state import Game_state
+from constants import Game_state, Colors
 from level import Rect_sprite
 
 if not pygame.get_init():
@@ -16,16 +16,7 @@ class Text(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
-class Colors():
-    """Contains used colors"""
-    WHITE = (255, 255, 255)
-    BLACK = (0, 0, 0)
-    GRAY = (100, 100, 100)
-    GREEN = (0, 255, 0)
-    BG_COLOR = BLACK
-    LVL_RECT_COLOR = GREEN
-    TEXT_COLOR = WHITE
-    DRONE_COLOR = GRAY
+
 
 
 class Fonts():

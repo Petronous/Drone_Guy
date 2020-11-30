@@ -6,7 +6,7 @@ import level
 import levels
 import drone
 import menu
-from game_state import Game_state
+from constants import Game_state
 
 
 def main():
@@ -25,6 +25,7 @@ def main():
     # INIT
     Game_state.DISP_SURF = pygame.display.set_mode(
         (WIN_W, WIN_H), pygame.RESIZABLE)
+    Game_state.lvl_list = levels.lvl_list
 
     # CAPTION
     pygame.display.set_caption("Drone guy")

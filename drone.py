@@ -1,5 +1,5 @@
 import pygame
-from game_state import Game_state
+from constants import Game_state
 
 
 def get_bigger(a,b):
