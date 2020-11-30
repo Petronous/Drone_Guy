@@ -1,7 +1,7 @@
 import pygame
-from game_state import Game_state
 
-def handle_input():
+
+def handle_input(Game_state):
     """Return the index of the lvl the user has chosen by clicking on it's rect (=> 0 = LVL 1), if nothing was chosen returns None"""
     for event in pygame.event.get(pygame.MOUSEBUTTONUP):
         for lvl_rect in Game_state.lvl_rects:

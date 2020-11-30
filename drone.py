@@ -1,5 +1,4 @@
 import pygame
-from game_state import Game_state
 
 
 def get_bigger(a,b):
@@ -27,16 +26,16 @@ class Drone(pygame.sprite.Sprite):
         self.health = 100
         self.crate  = None
 
-    def update(self):
+    def update(self, game_state):
         # update velocity based on gravity and controls
         self.vel[0] = self.acc * self.control_h
         self.vel[1] = (self.acc + gravity) * self.control_v + self.gravity
 
         # detect collision
-        for obstacle in Game_state.obstacles:
+        for obstacle in game_state.obstacles:
             if self.rect.collideRect(obstacle.rect):
                 self.collide(obstacle.rect)
-        for spawner in Game_state.spawners:
+        for spawner in game_state.spawners:
             if self.rect.collideRect(spawner.rect):
                 self.collide(spawner.rect)
 
