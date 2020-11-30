@@ -10,9 +10,10 @@ class Rect_sprite(pygame.sprite.Sprite):
 
 
 class Level():
-    def __init__(self, blocks=[], spawners=[]):
+    def __init__(self, blocks=[], spawners=[], drone_start_pos = (0,0)):
         self.blocks = blocks
         self.spawners = spawners
+        self.drone_start_pos = drone_start_pos
         self.group = pygame.sprite.Group()
 
 

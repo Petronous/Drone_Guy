@@ -26,6 +26,7 @@ def main():
     Game_state.DISP_SURF = pygame.display.set_mode(
         (WIN_W, WIN_H), pygame.RESIZABLE)
     Game_state.lvl_list = levels.lvl_list
+    Game_state.drone = drone.Drone()
 
     # CAPTION
     pygame.display.set_caption("Drone guy")
@@ -68,11 +69,28 @@ def handle_key_press():
         if choice is not None:
             Game_state.room = "lvl"
             Game_state.curr_lvl = Game_state.lvl_list[choice]
-            graphics.draw_level(Game_state, Game_state.curr_lvl, drone.Drone())
+            Game_state.drone.pos = Game_state.curr_lvl.drone_start_pos
 
     if Game_state.room == "lvl":
-        # Game_state.curr_lvl.update()
-        pass
+        # HANDLE EVENTS
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP: Game_state.drone.control_v =    -1
+                if event.key == pygame.K_DOWN: Game_state.drone.control_v =   1
+                if event.key == pygame.K_LEFT: Game_state.drone.control_h =  -1
+                if event.key == pygame.K_RIGHT: Game_state.drone.control_h =  1
+
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP: Game_state.drone.control_v =    0
+                if event.key == pygame.K_DOWN: Game_state.drone.control_v =  0
+                if event.key == pygame.K_LEFT: Game_state.drone.control_h =  0
+                if event.key == pygame.K_RIGHT: Game_state.drone.control_h = 0
+
+            else:
+                pygame.event.post(event)
+
+        Game_state.drone.update()
+        graphics.draw_level(Game_state, Game_state.curr_lvl, Game_state.drone)
 
 
 if __name__ == "__main__":
