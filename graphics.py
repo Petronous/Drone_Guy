@@ -57,7 +57,7 @@ def draw_menu(Game_state):
     # LVL SELECT TEXT
     LVL_SELECT = Text(
         Fonts.TITLE_FONT, "Level selection", Colors.TEXT_COLOR)
-    LVL_SELECT.rect.center = (WIN_W * 0.5, WIN_H * 0.1)
+    LVL_SELECT.rect.midtop = (WIN_W * 0.5, WIN_H * 0.05)
 
     # CREATE MENU SPRITE GROUP
     MENU_GRP = pygame.sprite.Group()
@@ -69,8 +69,11 @@ def draw_menu(Game_state):
     GAP_W = 0.0025 * WIN_W
     GAP_H = 0.0025 * WIN_H
     LVL_COUNT = len(Game_state.lvl_list)
-    LVL_RECT_W = (WIN_W - 2 * X_MARGIN - (LVL_COUNT - 1) * GAP_W) // 5
-    LVL_RECT_H = (WIN_H - 2 * Y_MARGIN - (LVL_COUNT - 1) * GAP_H) // 4
+    RECTS_PER_ROW = 5
+    LVL_RECT_W = (WIN_W - 2 * X_MARGIN - (LVL_COUNT - 1)
+                  * GAP_W) // RECTS_PER_ROW
+    LVL_RECT_H = (WIN_H - 2 * Y_MARGIN - (LVL_COUNT - 1)
+                  * GAP_H) // (LVL_COUNT // RECTS_PER_ROW)
 
     lvl_rect_x, lvl_rect_y = X_MARGIN, Y_MARGIN
 
@@ -78,7 +81,7 @@ def draw_menu(Game_state):
         if (i - 1) != 0:
             lvl_rect_x += LVL_RECT_W + GAP_W
 
-        if (i - 1) % 5 == 0 and (i - 1) != 0:
+        if (i - 1) % RECTS_PER_ROW == 0 and (i - 1) != 0:
             lvl_rect_y += LVL_RECT_H + GAP_H
             lvl_rect_x = X_MARGIN
 
