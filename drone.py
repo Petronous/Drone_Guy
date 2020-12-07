@@ -4,13 +4,20 @@ from constants import Game_state
 
 def sign(a): return 1 if a > 0 else -1 if a < 0 else 0
 
-
 def get_bigger(a, b):
     if a >= b:
         return a, 1
     else:
         return b, -1
 
+def get_coll_side(leftdist, rightdist, topdist, bottomdist):
+    dist_x, drc_x = get_bigger(leftdist, rightdist)
+    dist_y, drc_y = get_bigger(topdist, bottomdist)
+
+    dist, x_or_y = get_bigger(dist_y, dist_x)
+    x_or_y = (x_or_y + 1) // 2
+    drcs = (drc_x, drc_y)
+    return x_or_y, drcs, dist
 
 def clamp_vel(vel, mx):
     if abs(vel) > mx:
@@ -45,14 +52,15 @@ class Drone(pygame.sprite.Sprite):
         self.rect.center = (int(self.pos_x), int(self.pos_y))
 
         # detect collision
+        self.collide_level_boundaries(Game_state.curr_lvl.rect)
         for obstacle in Game_state.curr_lvl.blocks:
             if self.rect.colliderect(obstacle.rect):
-                self.collide(obstacle.rect)
+                self.collide_box(obstacle.rect)
         for spawner in Game_state.curr_lvl.spawners:
             if self.rect.colliderect(spawner.rect):
-                self.collide(spawner.rect)
+                self.collide_box(spawner.rect)
             if self.rect.collidepoint(spawner.detector.center) and self.vel[0] <= 10:
-                if self.crate is None:
+                if self.crate is None and spawner.crate:
                     self.crate = spawner.crate_color
                     spawner.crate = False
                 elif self.crate == spawner.color:
@@ -63,19 +71,20 @@ class Drone(pygame.sprite.Sprite):
         self.pos_y += self.vel[1]
         self.rect.center = (int(self.pos_x), int(self.pos_y))
 
-    def collide(self, other):
+    def collide_level_boundaries(self, other):
+        x_or_y, drcs, dist = get_coll_side(self.rect.right - other.right, other.left - self.rect.left,
+                                           self.rect.bottom - other.bottom, other.top - self.rect.top)
+        if dist > 0: self.collide(x_or_y, drcs)
+
+    def collide_box(self, other):
         '''
         Handles collision
         '''
-        dist_x, drc_x = get_bigger(
-            other.left - self.rect.right, self.rect.left - other.right)
-        dist_y, drc_y = get_bigger(
-            other.top - self.rect.bottom, self.rect.top - other.bottom)
+        x_or_y, drcs, _ = get_coll_side(other.left - self.rect.right, self.rect.left - other.right,
+                                     other.top - self.rect.bottom, self.rect.top - other.bottom)
+        self.collide(x_or_y, drcs)
 
-        dist, x_or_y = get_bigger(dist_y, dist_x)
-        x_or_y = (x_or_y + 1) // 2
-        drcs = (drc_x, drc_y)
-
+    def collide(self, x_or_y, drcs):
         impact_vel = self.vel[x_or_y]*drcs[x_or_y]
         self.vel[(x_or_y+1) % 2] *= 0.9  # To simulate friction
 

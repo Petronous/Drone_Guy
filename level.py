@@ -11,8 +11,9 @@ class Rect_sprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
-class Level():
-    def __init__(self, blocks=[], spawners=[], drone_start_pos=(0, 0), time_remaining=60):
+class Level(Rect_sprite):
+    def __init__(self, blocks=[], spawners=[], drone_start_pos=(100, 100), time_remaining=60, size = (1728, 972)):
+        super().__init__(size[0], size[1], Colors.LVL_BG_COLOR)
         self.blocks = blocks
         self.spawners = spawners
         self.drone_start_pos = drone_start_pos
@@ -53,6 +54,6 @@ class Spawner(Rect_sprite):
 
         if self.crate:
             self.crate_color = self.crate_destination.color
-            self.crate_cd = 5
+            self.crate_cd = 10
 
-        pygame.draw.rect(Game_state.DISP_SURF, self.crate_color, self.detector)
+        pygame.draw.rect(Game_state.curr_lvl.image, self.crate_color, self.detector)

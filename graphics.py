@@ -84,16 +84,17 @@ def draw_menu():
 
 
 def draw_drone(Game_state, drone):
-    pygame.draw.rect(Game_state.DISP_SURF, Colors.DRONE_COLOR, drone.rect)
+    pygame.draw.rect(Game_state.curr_lvl.image, Colors.DRONE_COLOR, drone.rect)
     if drone.crate:
         crate_rect = pygame.rect.Rect(0,0,40,40)
         crate_rect.midbottom = drone.rect.midbottom
-        pygame.draw.rect(Game_state.DISP_SURF, drone.crate, crate_rect)
+        pygame.draw.rect(Game_state.curr_lvl.image, drone.crate, crate_rect)
 
 
 def draw_level(Game_state, level, drone):
     Game_state.DISP_SURF.fill(Colors.BG_COLOR)
-    WIN_W, WIN_H = Game_state.DISP_SURF.get_size()
+    Game_state.curr_lvl.image.fill(Colors.LVL_BG_COLOR)
+    WIN_W, WIN_H = Game_state.curr_lvl.image.get_size()
 
     # UI
     txt_group = pygame.sprite.Group()
@@ -107,9 +108,12 @@ def draw_level(Game_state, level, drone):
     txt.rect.topright = (WIN_W - 10, 70)
     txt_group.add(txt)
 
-    txt_group.draw(Game_state.DISP_SURF)
+    txt_group.draw(Game_state.curr_lvl.image)
 
     # Drawing the level
     level.group.update()
     draw_drone(Game_state, drone)
-    level.group.draw(Game_state.DISP_SURF)
+    level.group.draw(Game_state.curr_lvl.image)
+    surfgroup = pygame.sprite.Group()
+    surfgroup.add(level)
+    surfgroup.draw(Game_state.DISP_SURF)

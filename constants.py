@@ -22,6 +22,7 @@ class Colors():
     GRAY = (100, 100, 100)
     GREEN = (0, 255, 0)
     BG_COLOR = BLACK
+    LVL_BG_COLOR = (50, 50, 50)
     LVL_RECT_COLOR = GREEN
     TEXT_COLOR = WHITE
     DRONE_COLOR = GRAY
