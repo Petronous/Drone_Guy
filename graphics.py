@@ -89,5 +89,6 @@ def draw_drone(Game_state, drone):
 
 def draw_level(Game_state, level, drone):
     Game_state.DISP_SURF.fill(Colors.BG_COLOR)
+    level.group.update()
     level.group.draw(Game_state.DISP_SURF)
     draw_drone(Game_state, drone)

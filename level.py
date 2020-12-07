@@ -1,5 +1,5 @@
 import pygame
-from constants import Colors
+from constants import Colors, Game_state
 
 
 class Rect_sprite(pygame.sprite.Sprite):
@@ -39,7 +39,15 @@ class Spawner(Rect_sprite):
         self.detector = pygame.Rect(x, y, 40, 40)
         self.rect.midtop = self.detector.midbottom
         self.color = color
+        self.crate = True
         group.add(self)
+
+    def update(self):
+        self.crate_color = Colors.BG_COLOR
+        if self.crate:
+            self.crate_color = Colors.WHITE
+
+        pygame.draw.rect(Game_state.DISP_SURF, self.crate_color, self.detector)
 
 
 """
