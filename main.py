@@ -13,7 +13,7 @@ def main():
     """Main function of the game, contains the game loop and initial setup"""
     # CONSTANTS
     # FPS
-    FPS_CLOCK = pygame.time.Clock()
+    Game_state.FPS_CLOCK = pygame.time.Clock()
     FPS = 30
 
     # DISPLAY SURFACE
@@ -25,7 +25,6 @@ def main():
     # INIT
     Game_state.DISP_SURF = pygame.display.set_mode(
         (WIN_W, WIN_H))
-    Game_state.lvl_list = levels.lvl_list
     Game_state.drone = drone.Drone()
 
     # CAPTION
@@ -41,10 +40,10 @@ def main():
         handle_resize()
 
         if Game_state.room == 'lvl':
-            Game_state.curr_lvl.time_remaining -= FPS_CLOCK.get_time() / 1000
+            Game_state.curr_lvl.time_remaining -= Game_state.FPS_CLOCK.get_time() / 1000
 
         pygame.display.update()
-        FPS_CLOCK.tick(FPS)
+        Game_state.FPS_CLOCK.tick(FPS)
 
 
 def terminate():
@@ -95,11 +94,11 @@ def handle_key_press():
                 if event.key == pygame.K_UP:
                     Game_state.drone.control_v = -1
                 if event.key == pygame.K_DOWN:
-                    Game_state.drone.control_v =  1
+                    Game_state.drone.control_v = 1
                 if event.key == pygame.K_LEFT:
                     Game_state.drone.control_h = -1
                 if event.key == pygame.K_RIGHT:
-                    Game_state.drone.control_h =  1
+                    Game_state.drone.control_h = 1
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:

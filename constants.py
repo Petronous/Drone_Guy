@@ -1,8 +1,10 @@
 import pygame
 
+
 class Game_state():
     """Most of the info any other file would need to use from main.py"""
     DISP_SURF = None
+    FPS_CLOCK = None
     room = "menu"
     drone = None
     obstacles = []
@@ -11,6 +13,7 @@ class Game_state():
     lvl_rects = []
     curr_lvl = None
     score = 0
+
 
 class Colors():
     """Contains used colors"""
