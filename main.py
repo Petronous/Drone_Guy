@@ -40,9 +40,6 @@ def main():
 
         handle_resize()
 
-        if Game_state.room == 'lvl':
-            Game_state.curr_lvl.time_remaining -= Game_state.FPS_CLOCK.get_time() / 1000
-
         pygame.display.update()
         Game_state.FPS_CLOCK.tick(FPS)
 
@@ -89,6 +86,7 @@ def handle_key_press():
             Game_state.drone.pos = Game_state.curr_lvl.drone_start_pos
 
     if Game_state.room == "lvl":
+        Game_state.curr_lvl.time_remaining -= Game_state.FPS_CLOCK.get_time() / 1000
         # HANDLE EVENTS
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:

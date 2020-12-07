@@ -12,7 +12,8 @@ class Rect_sprite(pygame.sprite.Sprite):
 
 
 class Level(Rect_sprite):
-    def __init__(self, blocks=[], spawners=[], drone_start_pos=(100, 100), time_remaining=60, size = (1728, 972)):
+    # TODO FIX – lvl objects appear in lvls other than their own
+    def __init__(self, blocks=[], spawners=[], drone_start_pos=(100, 100), time_remaining=60, size=(1728, 972)):
         super().__init__(size[0], size[1], Colors.LVL_BG_COLOR)
         self.blocks = blocks
         self.spawners = spawners
@@ -21,10 +22,17 @@ class Level(Rect_sprite):
         self.time_remaining = time_remaining
         Game_state.lvl_list.append(self)
 
+    def new_block(self, x, y, width, height):
+        self.blocks.append(Block(x, y, width, height, self.group))
+
+    def new_spawner(self, x, y, width, height, color):
+        self.spawners.append(
+            Spawner(x, y, width, height, color, self.group))
+
 
 class Block(Rect_sprite):
     def __init__(self, x, y, width, height, group):
-        super().__init__(width, height, (150, 150, 150))
+        super().__init__(width, height, Colors.GRAY)
         self.rect.topleft = (x, y)
         group.add(self)
 
@@ -38,15 +46,14 @@ class Spawner(Rect_sprite):
         self.crate = False
         self.crate_cd = 0
         group.add(self)
-        Game_state.spawners.append(self)
 
     def update(self):
-        self.crate_color = Colors.BG_COLOR
+        self.crate_color = Colors.LVL_BG_COLOR
 
         if not self.crate:
             self.crate_cd -= Game_state.FPS_CLOCK.get_time() / 1000
             if self.crate_cd <= 0:
-                destinations = Game_state.spawners.copy()
+                destinations = Game_state.curr_lvl.spawners.copy()
                 destinations.remove(self)
 
                 self.crate_destination = choice(destinations)
@@ -56,4 +63,5 @@ class Spawner(Rect_sprite):
             self.crate_color = self.crate_destination.color
             self.crate_cd = 10
 
-        pygame.draw.rect(Game_state.curr_lvl.image, self.crate_color, self.detector)
+        pygame.draw.rect(Game_state.curr_lvl.image,
+                         self.crate_color, self.detector)

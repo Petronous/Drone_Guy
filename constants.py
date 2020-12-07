@@ -7,8 +7,6 @@ class Game_state():
     FPS_CLOCK = None
     room = "menu"
     drone = None
-    obstacles = []
-    spawners = []
     lvl_list = []
     lvl_rects = []
     curr_lvl = None
