@@ -57,7 +57,7 @@ class Drone(pygame.sprite.Sprite):
                     spawner.crate = False
                 elif self.crate == spawner.color:
                     self.crate = None
-                    level.score += 1                
+                    Game_state.score += 1
 
         self.pos_x += self.vel[0]
         self.pos_y += self.vel[1]
