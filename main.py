@@ -38,6 +38,8 @@ def main():
 
         handle_key_press()
 
+        handle_resize()
+
         pygame.display.update()
         FPS_CLOCK.tick(FPS)
 
@@ -59,6 +61,18 @@ def check_for_quit():
         pygame.event.post(event)
 
 
+def handle_resize():
+    """ Doesn't work at all """
+    # for event in pygame.event.get(pygame.VIDEORESIZE):
+    #     print("VIDEORESIZE")
+    #     DISP_INFO = pygame.display.Info()
+    #     WIN_W = DISP_INFO.current_w
+    #     WIN_H = DISP_INFO.current_h
+    #     Game_state.DISP_SURF = pygame.display.set_mode((WIN_W, WIN_H), pygame.RESIZABLE)
+    #     print(WIN_H, WIN_W)
+    pass
+
+
 def handle_key_press():
     """Handles input from user depending on Game_state.room"""
     if Game_state.room == "menu":
@@ -78,11 +92,11 @@ def handle_key_press():
                 if event.key == pygame.K_UP:
                     Game_state.drone.control_v = -1
                 if event.key == pygame.K_DOWN:
-                    Game_state.drone.control_v = 1
+                    Game_state.drone.control_v =  1
                 if event.key == pygame.K_LEFT:
                     Game_state.drone.control_h = -1
                 if event.key == pygame.K_RIGHT:
-                    Game_state.drone.control_h = 1
+                    Game_state.drone.control_h =  1
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
