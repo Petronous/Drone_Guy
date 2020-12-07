@@ -24,7 +24,7 @@ def main():
 
     # INIT
     Game_state.DISP_SURF = pygame.display.set_mode(
-        (WIN_W, WIN_H), pygame.RESIZABLE)
+        (WIN_W, WIN_H))
     Game_state.lvl_list = levels.lvl_list
     Game_state.drone = drone.Drone()
 
