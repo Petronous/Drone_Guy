@@ -40,6 +40,9 @@ def main():
 
         handle_resize()
 
+        if Game_state.room == 'lvl':
+            Game_state.curr_lvl.time_remaining -= FPS_CLOCK.get_time() / 1000
+
         pygame.display.update()
         FPS_CLOCK.tick(FPS)
 

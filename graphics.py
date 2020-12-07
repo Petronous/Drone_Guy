@@ -89,6 +89,23 @@ def draw_drone(Game_state, drone):
 
 def draw_level(Game_state, level, drone):
     Game_state.DISP_SURF.fill(Colors.BG_COLOR)
+    WIN_W, WIN_H = Game_state.DISP_SURF.get_size()
+
+    # UI
+    txt_group = pygame.sprite.Group()
+    txt = Text(Fonts.BASIC_FONT, "Score: " + str(Game_state.score), Colors.TEXT_COLOR)
+    txt.rect.topright = (WIN_W - 10, 10)
+    txt_group.add(txt)
+    txt = Text(Fonts.BASIC_FONT, "Health: " + str(round(Game_state.drone.health)), Colors.TEXT_COLOR)
+    txt.rect.topright = (WIN_W - 10, 40)
+    txt_group.add(txt)
+    txt = Text(Fonts.BASIC_FONT, "Remaining time: " + str(round(level.time_remaining)), Colors.TEXT_COLOR)
+    txt.rect.topright = (WIN_W - 10, 70)
+    txt_group.add(txt)
+
+    txt_group.draw(Game_state.DISP_SURF)
+
+    # Drawing the level
     level.group.update()
     level.group.draw(Game_state.DISP_SURF)
     draw_drone(Game_state, drone)

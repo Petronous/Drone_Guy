@@ -16,6 +16,7 @@ class Level():
         self.spawners = spawners
         self.drone_start_pos = drone_start_pos
         self.group = pygame.sprite.Group()
+        self.time_remaining = 60
 
 
 class Block(Rect_sprite):
