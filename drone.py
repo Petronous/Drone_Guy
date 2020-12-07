@@ -51,9 +51,13 @@ class Drone(pygame.sprite.Sprite):
         for spawner in Game_state.curr_lvl.spawners:
             if self.rect.colliderect(spawner.rect):
                 self.collide(spawner.rect)
-            if self.rect.collidepoint(spawner.detector.center) and not self.crate:
-                self.crate = spawner.crate_color
-                spawner.crate = False
+            if self.rect.collidepoint(spawner.detector.center) and self.vel[0] <= 10:
+                if self.crate is None:
+                    self.crate = spawner.crate_color
+                    spawner.crate = False
+                elif self.crate == spawner.color:
+                    self.crate = None
+                    level.score += 1                
 
         self.pos_x += self.vel[0]
         self.pos_y += self.vel[1]
