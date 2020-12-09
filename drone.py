@@ -31,7 +31,8 @@ class Drone(pygame.sprite.Sprite):
         super(Drone, self).__init__()
         self.rect = pygame.Rect(x, y, 80, 50)
         self.vel = [0, 0]
-        self.acc = 0.3
+        self.v_acc = 0.3
+        self.h_acc = 0.6
         self.gravity = 0.3
         self.pos_x = 0
         self.pos_y = 0
@@ -45,8 +46,8 @@ class Drone(pygame.sprite.Sprite):
 
     def update(self):
         # update velocity based on gravity and controls
-        self.vel[0] += self.acc * self.control_h
-        self.vel[1] += (self.acc + self.gravity) * \
+        self.vel[0] += self.h_acc * self.control_h
+        self.vel[1] += (self.v_acc + self.gravity) * \
             self.control_v + self.gravity
 
         self.rect.center = (int(self.pos_x), int(self.pos_y))

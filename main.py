@@ -83,7 +83,8 @@ def handle_key_press():
         if choice is not None:
             Game_state.room = "lvl"
             Game_state.curr_lvl = Game_state.lvl_list[choice]
-            Game_state.drone.pos = Game_state.curr_lvl.drone_start_pos
+            Game_state.drone.pos_x, Game_state.drone.pos_y = Game_state.curr_lvl.drone_start_pos
+            Game_state.drone.health = 100
 
     if Game_state.room == "lvl":
         Game_state.curr_lvl.time_remaining -= Game_state.FPS_CLOCK.get_time() / 1000
