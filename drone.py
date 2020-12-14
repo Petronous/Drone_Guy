@@ -30,6 +30,10 @@ class Drone(pygame.sprite.Sprite):
     def __init__(self, x=0, y=0):
         super(Drone, self).__init__()
         self.rect = pygame.Rect(x, y, 80, 50)
+        self.draw_rect = pygame.Rect(0,0, 100, 60)
+        self.draw_rect.midbottom = self.rect.midbottom
+        self.image = pygame.image.load("imgs/drone.png")
+        self.image = pygame.transform.smoothscale(self.image, self.draw_rect.size)
         self.vel = [0, 0]
         self.v_acc = 0.3
         self.h_acc = 0.6
@@ -71,6 +75,7 @@ class Drone(pygame.sprite.Sprite):
         self.pos_x += self.vel[0]
         self.pos_y += self.vel[1]
         self.rect.center = (int(self.pos_x), int(self.pos_y))
+        self.draw_rect.midbottom = self.rect.midbottom
 
     def collide_level_boundaries(self, other):
         x_or_y, drcs, dist = get_coll_side(self.rect.right - other.right, other.left - self.rect.left,
