@@ -13,5 +13,5 @@ test.new_spawner(300, 300, 100, 30, (255, 0, 0))
 test.new_spawner(600, 200, 150, 30, (255, 255, 0))
 test.new_spawner(700, 500, 90, 40, (255, 0, 255))
 
-
 # LVL 2
+test2 = Level()

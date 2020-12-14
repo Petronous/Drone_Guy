@@ -15,8 +15,8 @@ class Level(Rect_sprite):
     # TODO FIX – lvl objects appear in lvls other than their own
     def __init__(self, blocks=[], spawners=[], drone_start_pos=(100, 100), time_remaining=60, size=(1728, 972)):
         super().__init__(size[0], size[1], Colors.LVL_BG_COLOR)
-        self.blocks = blocks
-        self.spawners = spawners
+        self.blocks = []
+        self.spawners = []
         self.drone_start_pos = drone_start_pos
         self.group = pygame.sprite.Group()
         self.time_remaining = time_remaining
