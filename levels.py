@@ -14,7 +14,7 @@ test.new_spawner(600, 200, 150, 30, (255, 255, 0))
 test.new_spawner(700, 500, 90, 40, (255, 0, 255))
 
 # LVL 2
-lvl2 = Level()
+lvl2 = Level(size = (1382, 778))
 
 # Spawner 1
 lvl2.new_spawner(600, 300, 100, 30, (0, 0, 255))

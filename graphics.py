@@ -115,9 +115,8 @@ def draw_level(Game_state, level, drone):
     level.group.update()
     draw_drone(Game_state, drone)
     level.group.draw(Game_state.curr_lvl.image)
-    surfgroup = pygame.sprite.Group()
-    surfgroup.add(level)
-    surfgroup.draw(Game_state.DISP_SURF)
+
+    Game_state.DISP_SURF.blit(resize_levelsurf(), (0,0))
 
 
 def draw_game_over():
@@ -142,6 +141,11 @@ def draw_game_over():
     txt_group.add(txt)
 
     txt_group.draw(Game_state.curr_lvl.image)
-    surfgroup = pygame.sprite.Group()
-    surfgroup.add(Game_state.curr_lvl)
-    surfgroup.draw(Game_state.DISP_SURF)
+    Game_state.DISP_SURF.blit(resize_levelsurf(), (0,0))
+
+def resize_levelsurf():
+    WIN_W, WIN_H = Game_state.curr_lvl.image.get_size()
+    REAL_W, REAL_H = Game_state.DISP_SURF.get_size()
+    diff_x, diff_y = REAL_W/WIN_W, REAL_H/WIN_H
+    zoom = min(diff_x, diff_y)
+    return pygame.transform.smoothscale(Game_state.curr_lvl.image, (int(WIN_W*zoom), int(WIN_H*zoom)))
