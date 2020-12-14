@@ -21,6 +21,7 @@ class Fonts():
     BASE_FONT_SIZE = 20
     TITLE_FONT_SIZE = 4 * BASE_FONT_SIZE
     BASIC_FONT = pygame.font.Font('freesansbold.ttf', BASE_FONT_SIZE)
+    BIGGER_FONT = pygame.font.Font('freesansbold.ttf', BASE_FONT_SIZE * 2)
     TITLE_FONT = pygame.font.Font('freesansbold.ttf', TITLE_FONT_SIZE)
 
 
@@ -116,4 +117,31 @@ def draw_level(Game_state, level, drone):
     level.group.draw(Game_state.curr_lvl.image)
     surfgroup = pygame.sprite.Group()
     surfgroup.add(level)
+    surfgroup.draw(Game_state.DISP_SURF)
+
+
+def draw_game_over():
+    Game_state.DISP_SURF.fill(Colors.BG_COLOR)
+    Game_state.curr_lvl.image.fill(Colors.LVL_BG_COLOR)
+    WIN_W, WIN_H = Game_state.curr_lvl.image.get_size()
+
+    txt_group = pygame.sprite.Group()
+    txt = Text(Fonts.TITLE_FONT, "Game Over", Colors.TEXT_COLOR)
+    txt.rect.midtop = (WIN_W//2, 30)
+    txt_group.add(txt)
+    if Game_state.drone.health <= 0: reason = "Drone broke down"
+    else: reason = "Time run out"
+    txt = Text(Fonts.BIGGER_FONT, reason , Colors.TEXT_COLOR)
+    txt.rect.midtop = (WIN_W//2, 150)
+    txt_group.add(txt)
+    txt = Text(Fonts.BIGGER_FONT, "Score: " + str(Game_state.score) , Colors.TEXT_COLOR)
+    txt.rect.midtop = (WIN_W//2, 220)
+    txt_group.add(txt)
+    txt = Text(Fonts.BASIC_FONT, "Press space to return to menu, esc to quit" , Colors.TEXT_COLOR)
+    txt.rect.midtop = (WIN_W//2, 310)
+    txt_group.add(txt)
+
+    txt_group.draw(Game_state.curr_lvl.image)
+    surfgroup = pygame.sprite.Group()
+    surfgroup.add(Game_state.curr_lvl)
     surfgroup.draw(Game_state.DISP_SURF)

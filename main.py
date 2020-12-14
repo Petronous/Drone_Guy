@@ -83,11 +83,15 @@ def handle_key_press():
         if choice is not None:
             Game_state.room = "lvl"
             Game_state.curr_lvl = Game_state.lvl_list[choice]
+            Game_state.curr_lvl.time_remaining = Game_state.curr_lvl.init_time
+            Game_state.drone = drone.Drone()
             Game_state.drone.pos_x, Game_state.drone.pos_y = Game_state.curr_lvl.drone_start_pos
-            Game_state.drone.health = 100
 
     if Game_state.room == "lvl":
         Game_state.curr_lvl.time_remaining -= Game_state.FPS_CLOCK.get_time() / 1000
+        if Game_state.curr_lvl.time_remaining <= 0 or Game_state.drone.health <= 0:
+            Game_state.room = "game_over"
+            return
         # HANDLE EVENTS
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -115,6 +119,14 @@ def handle_key_press():
 
         Game_state.drone.update()
         graphics.draw_level(Game_state, Game_state.curr_lvl, Game_state.drone)
+
+    if Game_state.room == "game_over":
+        for event in pygame.event.get(pygame.KEYDOWN):
+            if event.key == pygame.K_SPACE:
+                Game_state.room = "menu"
+                return
+
+        graphics.draw_game_over()
 
 
 if __name__ == "__main__":

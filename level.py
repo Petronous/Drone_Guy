@@ -19,6 +19,7 @@ class Level(Rect_sprite):
         self.spawners = []
         self.drone_start_pos = drone_start_pos
         self.group = pygame.sprite.Group()
+        self.init_time = time_remaining
         self.time_remaining = time_remaining
         Game_state.lvl_list.append(self)
 
