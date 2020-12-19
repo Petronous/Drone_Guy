@@ -15,7 +15,7 @@ test.new_spawner(700, 500, 90, 40, (255, 0, 255))  # 3
 
 
 # LVL 2
-lvl2 = Level(size=(1382, 778), score_to_win=10, time_remaining=120)
+lvl2 = Level(size=(1382, 778), score_to_win=10, time_remaining=180)
 # SPAWNERS
 lvl2.new_spawner(600, 300, 100, 30, (0, 0, 255))  # 1
 lvl2.new_spawner(800, 300, 100, 30, (0, 255, 0))  # 2

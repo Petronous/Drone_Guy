@@ -1,5 +1,6 @@
 import pygame
 from constants import Game_state
+from levels import RectSprite
 
 
 def sign(a): return 1 if a > 0 else -1 if a < 0 else 0
@@ -34,6 +35,8 @@ class Drone(pygame.sprite.Sprite):
         self.draw_rect.midbottom = self.rect.midbottom
         self.image = pygame.image.load("imgs/drone.png")
         self.image = pygame.transform.smoothscale(self.image, self.draw_rect.size)
+        self.crate_sprite = RectSprite(36, 36, image_path = "imgs/crate.png")
+        self.crate_sprite.rect.midbottom = self.rect.midbottom
         self.vel = [0, 0]
         self.v_acc = 0.3
         self.h_acc = 0.6
@@ -76,6 +79,7 @@ class Drone(pygame.sprite.Sprite):
         self.pos_y += self.vel[1]
         self.rect.center = (int(self.pos_x), int(self.pos_y))
         self.draw_rect.midbottom = self.rect.midbottom
+        self.crate_sprite.rect.midbottom = self.rect.midbottom
 
     def collide_level_boundaries(self, other):
         x_or_y, drcs, dist = get_coll_side(self.rect.right - other.right, other.left - self.rect.left,
@@ -97,5 +101,5 @@ class Drone(pygame.sprite.Sprite):
         if impact_vel > 0:
             # check for damage if bump
             if impact_vel > self.durability:
-                self.health -= impact_vel - self.durability
+                self.health -= (impact_vel - self.durability)*1.35
             self.vel[x_or_y] = 0

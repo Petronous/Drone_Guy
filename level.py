@@ -3,15 +3,19 @@ from random import choice
 from constants import Colors, Game_state
 
 
-class Rect_sprite(pygame.sprite.Sprite):
-    def __init__(self, width, height, color):
+class RectSprite(pygame.sprite.Sprite):
+    def __init__(self, width, height, color = Colors.BLACK, image_path = None):
         super().__init__()
-        self.image = pygame.Surface((width, height))
-        self.image.fill(color)
+        if image_path is None:
+            self.image = pygame.Surface((width, height))
+            self.image.fill(color)
+        else:
+            self.image = pygame.image.load(image_path)
+            self.image = pygame.transform.smoothscale(self.image, (width, height))
         self.rect = self.image.get_rect()
 
 
-class Level(Rect_sprite):
+class Level(RectSprite):
     def __init__(self, drone_start_pos=(100, 100), time_remaining=60, score_to_win=10, size=(1728, 972)):
         super().__init__(size[0], size[1], Colors.LVL_BG_COLOR)
         self.blocks = []
@@ -31,19 +35,24 @@ class Level(Rect_sprite):
             Spawner(x, y, width, height, color, self.group))
 
 
-class Block(Rect_sprite):
+class Block(RectSprite):
     def __init__(self, x, y, width, height, group):
-        super().__init__(width, height, Colors.GRAY)
+        super().__init__(width, height, color = Colors.GRAY)
         self.rect.topleft = (x, y)
         group.add(self)
 
 
-class Spawner(Rect_sprite):
+class Spawner(RectSprite):
     def __init__(self, x, y, width, height, color, group):
-        super().__init__(width, height, color)
+        super().__init__(width, height, color = color)
         self.detector = pygame.Rect(x, y, 40, 40)
+        self.color_rect = pygame.Rect(0, 0, 36, 36)
         self.rect.midtop = self.detector.midbottom
+        self.color_rect.center = self.detector.center
         self.color = color
+        self.crate_sprite = RectSprite(40, 40, image_path = "imgs/crate.png")
+        self.crate_sprite.rect = self.detector
+        group.add(self.crate_sprite)
         self.crate = False
         self.crate_cd = 0
         group.add(self)
@@ -52,12 +61,14 @@ class Spawner(Rect_sprite):
         self.crate_color = Colors.LVL_BG_COLOR
 
         if not self.crate:
+            if self.crate_sprite.alive(): self.crate_sprite.kill()
             self.crate_cd -= Game_state.FPS_CLOCK.get_time() / 1000
             if self.crate_cd <= 0:
                 destinations = Game_state.curr_lvl.spawners.copy()
                 destinations.remove(self)
 
                 self.crate_destination = choice(destinations)
+                self.crate_sprite.add(Game_state.curr_lvl.group)
                 self.crate = True
 
         if self.crate:
@@ -65,4 +76,4 @@ class Spawner(Rect_sprite):
             self.crate_cd = 10
 
         pygame.draw.rect(Game_state.curr_lvl.image,
-                         self.crate_color, self.detector)
+                         self.crate_color, self.color_rect)

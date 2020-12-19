@@ -1,6 +1,6 @@
 import pygame
 from constants import Game_state, Colors
-from level import Rect_sprite
+from level import RectSprite
 
 if not pygame.get_init():
     pygame.init()
@@ -71,7 +71,7 @@ def draw_menu():
             lvl_rect_y += LVL_RECT_H + GAP_H
             lvl_rect_x = X_MARGIN
 
-        lvl_rect = Rect_sprite(LVL_RECT_W, LVL_RECT_H, Colors.LVL_RECT_COLOR)
+        lvl_rect = RectSprite(LVL_RECT_W, LVL_RECT_H, Colors.LVL_RECT_COLOR)
         lvl_rect.rect.topleft = (lvl_rect_x, lvl_rect_y)
         MENU_GRP.add(lvl_rect)
 
@@ -86,9 +86,10 @@ def draw_menu():
 
 def draw_drone(Game_state, drone):
     if drone.crate:
-        crate_rect = pygame.rect.Rect(0, 0, 34, 34)
-        crate_rect.midbottom = drone.rect.midbottom
+        crate_rect = pygame.rect.Rect(0, 0, 32, 32)
+        crate_rect.center = drone.crate_sprite.rect.center
         pygame.draw.rect(Game_state.curr_lvl.image, drone.crate, crate_rect)
+        Game_state.curr_lvl.image.blit(drone.crate_sprite.image, drone.crate_sprite.rect)
     Game_state.curr_lvl.image.blit(drone.image, drone.draw_rect)
 
 
@@ -116,8 +117,8 @@ def draw_level(Game_state, level, drone):
 
     # Drawing the level
     level.group.update()
-    draw_drone(Game_state, drone)
     level.group.draw(Game_state.curr_lvl.image)
+    draw_drone(Game_state, drone)
 
     Game_state.DISP_SURF.blit(resize_levelsurf(), (0, 0))
 
