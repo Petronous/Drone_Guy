@@ -12,7 +12,7 @@ class Rect_sprite(pygame.sprite.Sprite):
 
 
 class Level(Rect_sprite):
-    def __init__(self, drone_start_pos=(100, 100), time_remaining=60, size=(1728, 972)):
+    def __init__(self, drone_start_pos=(100, 100), time_remaining=60, score_to_win=10, size=(1728, 972)):
         super().__init__(size[0], size[1], Colors.LVL_BG_COLOR)
         self.blocks = []
         self.spawners = []
@@ -20,6 +20,7 @@ class Level(Rect_sprite):
         self.group = pygame.sprite.Group()
         self.init_time = time_remaining
         self.time_remaining = time_remaining
+        self.score_to_win = score_to_win
         Game_state.lvl_list.append(self)
 
     def new_block(self, x, y, width, height):

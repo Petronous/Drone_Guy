@@ -86,7 +86,7 @@ def draw_menu():
 
 def draw_drone(Game_state, drone):
     if drone.crate:
-        crate_rect = pygame.rect.Rect(0,0,34,34)
+        crate_rect = pygame.rect.Rect(0, 0, 34, 34)
         crate_rect.midbottom = drone.rect.midbottom
         pygame.draw.rect(Game_state.curr_lvl.image, drone.crate, crate_rect)
     Game_state.curr_lvl.image.blit(drone.image, drone.draw_rect)
@@ -99,13 +99,16 @@ def draw_level(Game_state, level, drone):
 
     # UI
     txt_group = pygame.sprite.Group()
-    txt = Text(Fonts.BASIC_FONT, "Score: " + str(Game_state.score), Colors.TEXT_COLOR)
+    txt = Text(Fonts.BASIC_FONT, "Score: " +
+               str(Game_state.score), Colors.TEXT_COLOR)
     txt.rect.topright = (WIN_W - 10, 10)
     txt_group.add(txt)
-    txt = Text(Fonts.BASIC_FONT, "Health: " + str(round(Game_state.drone.health)), Colors.TEXT_COLOR)
+    txt = Text(Fonts.BASIC_FONT, "Health: " +
+               str(round(Game_state.drone.health)), Colors.TEXT_COLOR)
     txt.rect.topright = (WIN_W - 10, 40)
     txt_group.add(txt)
-    txt = Text(Fonts.BASIC_FONT, "Remaining time: " + str(round(level.time_remaining)), Colors.TEXT_COLOR)
+    txt = Text(Fonts.BASIC_FONT, "Remaining time: " +
+               str(round(level.time_remaining)), Colors.TEXT_COLOR)
     txt.rect.topright = (WIN_W - 10, 70)
     txt_group.add(txt)
 
@@ -116,7 +119,7 @@ def draw_level(Game_state, level, drone):
     draw_drone(Game_state, drone)
     level.group.draw(Game_state.curr_lvl.image)
 
-    Game_state.DISP_SURF.blit(resize_levelsurf(), (0,0))
+    Game_state.DISP_SURF.blit(resize_levelsurf(), (0, 0))
 
 
 def draw_game_over():
@@ -128,20 +131,31 @@ def draw_game_over():
     txt = Text(Fonts.TITLE_FONT, "Game Over", Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 30)
     txt_group.add(txt)
-    if Game_state.drone.health <= 0: reason = "Drone broke down"
-    else: reason = "Time run out"
-    txt = Text(Fonts.BIGGER_FONT, reason , Colors.TEXT_COLOR)
+
+    if Game_state.drone.health <= 0:
+        reason = "Your drone broke down!"
+
+    elif Game_state.score >= Game_state.curr_lvl.score_to_win:
+        reason = "You completed the level!"
+
+    else:
+        reason = "You ran out of time!"
+
+    txt = Text(Fonts.BIGGER_FONT, reason, Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 150)
     txt_group.add(txt)
-    txt = Text(Fonts.BIGGER_FONT, "Score: " + str(Game_state.score) , Colors.TEXT_COLOR)
+    txt = Text(Fonts.BIGGER_FONT, "Score: " +
+               str(Game_state.score), Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 220)
     txt_group.add(txt)
-    txt = Text(Fonts.BASIC_FONT, "Press space to return to menu, esc to quit" , Colors.TEXT_COLOR)
+    txt = Text(Fonts.BASIC_FONT,
+               "Press space to return to menu, esc to quit", Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 310)
     txt_group.add(txt)
 
     txt_group.draw(Game_state.curr_lvl.image)
-    Game_state.DISP_SURF.blit(resize_levelsurf(), (0,0))
+    Game_state.DISP_SURF.blit(resize_levelsurf(), (0, 0))
+
 
 def resize_levelsurf():
     WIN_W, WIN_H = Game_state.curr_lvl.image.get_size()
