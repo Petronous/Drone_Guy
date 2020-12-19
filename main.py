@@ -5,7 +5,6 @@ import graphics
 import level
 import levels
 import drone
-import menu
 from constants import Game_state
 
 
@@ -78,7 +77,7 @@ def handle_key_press():
     if Game_state.room == "menu":
         graphics.draw_menu()
         # RETURN VALUE IS LVL NUMBER CHOSEN - 1 OR NONE IF NO LVL WAS CHOSEN
-        choice = menu.handle_input()
+        choice = menu_handle_input()
         # RUN CHOSEN LVL
         if choice is not None:
             Game_state.room = "lvl"
@@ -128,6 +127,14 @@ def handle_key_press():
                 return
 
         graphics.draw_game_over()
+
+
+def menu_handle_input():
+    """Return the index of the lvl the user has chosen by clicking on it's rect (=> 0 = LVL 1), if nothing was chosen returns None"""
+    for event in pygame.event.get(pygame.MOUSEBUTTONUP):
+        for lvl_rect in Game_state.lvl_rects:
+            if lvl_rect.rect.collidepoint(pygame.mouse.get_pos()):
+                return Game_state.lvl_rects.index(lvl_rect)
 
 
 if __name__ == "__main__":

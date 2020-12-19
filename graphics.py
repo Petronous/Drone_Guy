@@ -25,11 +25,6 @@ class Fonts():
     TITLE_FONT = pygame.font.Font('freesansbold.ttf', TITLE_FONT_SIZE)
 
 
-class Menu():
-    """Class to be passed to handle_input() in menu.py for lvl selection"""
-    LVL_RECTS = []
-
-
 def draw_menu():
     """Scrappy and sloppy basic graphics for lvl select aka menu"""
     # GET WINDOW DIMENSIONS
@@ -89,7 +84,8 @@ def draw_drone(Game_state, drone):
         crate_rect = pygame.rect.Rect(0, 0, 32, 32)
         crate_rect.center = drone.crate_sprite.rect.center
         pygame.draw.rect(Game_state.curr_lvl.image, drone.crate, crate_rect)
-        Game_state.curr_lvl.image.blit(drone.crate_sprite.image, drone.crate_sprite.rect)
+        Game_state.curr_lvl.image.blit(
+            drone.crate_sprite.image, drone.crate_sprite.rect)
     Game_state.curr_lvl.image.blit(drone.image, drone.draw_rect)
 
 
