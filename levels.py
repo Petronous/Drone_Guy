@@ -3,7 +3,7 @@ from level import *
 from constants import Colors
 
 # TEST LVL
-test = Level(size=(1382, 778))
+test = Level(size=(1382, 778), score_to_win=1, time_remaining=60)
 
 # BLOCKS
 test.new_block(935, 0, 50, 650)  # 1
