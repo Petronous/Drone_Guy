@@ -125,7 +125,7 @@ def draw_game_over():
     WIN_W, WIN_H = Game_state.curr_lvl.image.get_size()
 
     txt_group = pygame.sprite.Group()
-    txt = Text(Fonts.TITLE_FONT, "Game Over", Colors.TEXT_COLOR)
+    txt = Text(Fonts.TITLE_FONT, "GAME OVER!", Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 30)
     txt_group.add(txt)
 
