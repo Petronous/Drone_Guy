@@ -5,11 +5,13 @@ from levels import RectSprite
 
 def sign(a): return 1 if a > 0 else -1 if a < 0 else 0
 
+
 def get_bigger(a, b):
     if a >= b:
         return a, 1
     else:
         return b, -1
+
 
 def get_coll_side(leftdist, rightdist, topdist, bottomdist):
     dist_x, drc_x = get_bigger(leftdist, rightdist)
@@ -19,6 +21,7 @@ def get_coll_side(leftdist, rightdist, topdist, bottomdist):
     x_or_y = (x_or_y + 1) // 2
     drcs = (drc_x, drc_y)
     return x_or_y, drcs, dist
+
 
 def clamp_vel(vel, mx):
     if abs(vel) > mx:
@@ -31,11 +34,12 @@ class Drone(pygame.sprite.Sprite):
     def __init__(self, x=0, y=0):
         super(Drone, self).__init__()
         self.rect = pygame.Rect(x, y, 80, 50)
-        self.draw_rect = pygame.Rect(0,0, 100, 60)
+        self.draw_rect = pygame.Rect(0, 0, 100, 60)
         self.draw_rect.midbottom = self.rect.midbottom
         self.image = pygame.image.load("imgs/drone.png")
-        self.image = pygame.transform.smoothscale(self.image, self.draw_rect.size)
-        self.crate_sprite = RectSprite(36, 36, image_path = "imgs/crate.png")
+        self.image = pygame.transform.smoothscale(
+            self.image, self.draw_rect.size)
+        self.crate_sprite = RectSprite(36, 36, image_path="imgs/crate.png")
         self.crate_sprite.rect.midbottom = self.rect.midbottom
         self.vel = [0, 0]
         self.v_acc = 0.3
@@ -67,7 +71,7 @@ class Drone(pygame.sprite.Sprite):
         for spawner in Game_state.curr_lvl.spawners:
             if self.rect.colliderect(spawner.rect):
                 self.collide_box(spawner.rect)
-            if self.rect.collidepoint(spawner.detector.center) and self.vel[0] <= 10:
+            if self.rect.collidepoint(spawner.detector.midbottom) and self.vel[0] <= 10:
                 if self.crate is None and spawner.crate:
                     self.crate = spawner.crate_color
                     spawner.crate = False
@@ -84,14 +88,15 @@ class Drone(pygame.sprite.Sprite):
     def collide_level_boundaries(self, other):
         x_or_y, drcs, dist = get_coll_side(self.rect.right - other.right, other.left - self.rect.left,
                                            self.rect.bottom - other.bottom, other.top - self.rect.top)
-        if dist > 0: self.collide(x_or_y, drcs)
+        if dist > 0:
+            self.collide(x_or_y, drcs)
 
     def collide_box(self, other):
         '''
         Handles collision
         '''
         x_or_y, drcs, _ = get_coll_side(other.left - self.rect.right, self.rect.left - other.right,
-                                     other.top - self.rect.bottom, self.rect.top - other.bottom)
+                                        other.top - self.rect.bottom, self.rect.top - other.bottom)
         self.collide(x_or_y, drcs)
 
     def collide(self, x_or_y, drcs):
