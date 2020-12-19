@@ -96,16 +96,16 @@ def draw_level(Game_state, level, drone):
 
     # UI
     txt_group = pygame.sprite.Group()
-    txt = Text(Fonts.BASIC_FONT, "Score: " +
-               str(Game_state.score), Colors.TEXT_COLOR)
+    txt = Text(Fonts.BASIC_FONT,
+               f"Score: {Game_state.score} / {Game_state.curr_lvl.score_to_win}", Colors.TEXT_COLOR)
     txt.rect.topright = (WIN_W - 10, 10)
     txt_group.add(txt)
-    txt = Text(Fonts.BASIC_FONT, "Health: " +
-               str(round(Game_state.drone.health)), Colors.TEXT_COLOR)
+    txt = Text(Fonts.BASIC_FONT,
+               f"Health: {round(Game_state.drone.health)}", Colors.TEXT_COLOR)
     txt.rect.topright = (WIN_W - 10, 40)
     txt_group.add(txt)
-    txt = Text(Fonts.BASIC_FONT, "Remaining time: " +
-               str(round(level.time_remaining)), Colors.TEXT_COLOR)
+    txt = Text(Fonts.BASIC_FONT,
+               f"Remaining time: {round(level.time_remaining)}", Colors.TEXT_COLOR)
     txt.rect.topright = (WIN_W - 10, 70)
     txt_group.add(txt)
 
@@ -141,12 +141,12 @@ def draw_game_over():
     txt = Text(Fonts.BIGGER_FONT, reason, Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 150)
     txt_group.add(txt)
-    txt = Text(Fonts.BIGGER_FONT, "Score: " +
-               str(Game_state.score), Colors.TEXT_COLOR)
+    txt = Text(Fonts.BIGGER_FONT,
+               f"Score: {Game_state.score} / {Game_state.curr_lvl.score_to_win}", Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 220)
     txt_group.add(txt)
     txt = Text(Fonts.BASIC_FONT,
-               "Press space to return to menu, esc to quit", Colors.TEXT_COLOR)
+               "Press SPACE to return to level selection, ESC to quit", Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 310)
     txt_group.add(txt)
 
