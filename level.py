@@ -20,6 +20,7 @@ class Level(RectSprite):
         super().__init__(size[0], size[1], Colors.LVL_BG_COLOR)
         self.blocks = []
         self.spawners = []
+        self.exit_platform = None
         self.drone_start_pos = drone_start_pos
         self.group = pygame.sprite.Group()
         self.init_time = time_remaining
@@ -34,12 +35,46 @@ class Level(RectSprite):
         self.spawners.append(
             Spawner(x, y, width, height, color, self.group))
 
+    def end_level(self):
+        self.time_remaining = 0
+
+    def make_exit_platform(self, x, y, width, height):
+        self.exit_platform = Platform(x, y, width, height, self.group, self.end_level, Colors.FINISH_GREEN, Colors.GRAY)
+        self.blocks.append(self.exit_platform)
+
 
 class Block(RectSprite):
     def __init__(self, x, y, width, height, group):
         super().__init__(width, height, color = Colors.GRAY)
         self.rect.topleft = (x, y)
         group.add(self)
+
+
+class Platform(RectSprite):
+    def __init__(self, x, y, w, h, group, on_hit, on_color, off_color, max_vel = 1):
+        super().__init__(w, h, color = off_color)
+        self.rect.topleft = (x, y)
+        self.on_color = on_color
+        self.off_color = off_color
+        self.color = off_color
+        self.activated = False
+        self.on_hit = on_hit
+        self.max_vel = max_vel
+        group.add(self)
+
+    def update(self):
+        if self.activated:
+            if self.color != self.on_color:
+                self.image.fill(self.on_color)
+                self.color = self.on_color
+            if self.rect.collidepoint(Game_state.drone.rect.midbottom):
+                print(max(map(abs, Game_state.drone.vel)))
+                if max(map(abs, Game_state.drone.vel)) <= self.max_vel:
+                    self.on_hit()
+
+        elif self.color != self.off_color:
+            self.image.fill(self.on_color)
+            self.color = self.on_color
 
 
 class Spawner(RectSprite):

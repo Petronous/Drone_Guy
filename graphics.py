@@ -1,6 +1,7 @@
 import pygame
 from constants import Game_state, Colors
 from level import RectSprite
+from random import randint
 
 if not pygame.get_init():
     pygame.init()
@@ -116,7 +117,13 @@ def draw_level(Game_state, level, drone):
     level.group.draw(Game_state.curr_lvl.image)
     draw_drone(Game_state, drone)
 
-    Game_state.DISP_SURF.blit(resize_levelsurf(), (0, 0))
+    x, y = 0, 0
+    if drone.damage > 1:
+        dmg = round(drone.damage)
+        x = randint(-dmg, dmg)
+        y = randint(-dmg, dmg)
+        drone.damage *= 0.5
+    Game_state.DISP_SURF.blit(resize_levelsurf(), (x, y))
 
 
 def draw_game_over():

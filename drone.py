@@ -53,6 +53,7 @@ class Drone(pygame.sprite.Sprite):
         self.max_spd = 15
         self.durability = 5
         self.health = 100
+        self.damage = 0
         self.crate = None
 
     def update(self):
@@ -72,18 +73,24 @@ class Drone(pygame.sprite.Sprite):
             if self.rect.colliderect(spawner.rect):
                 self.collide_box(spawner.rect)
             if self.rect.collidepoint(spawner.detector.midbottom) and self.vel[0] <= 10:
-                if self.crate is None and spawner.crate:
-                    self.crate = spawner.crate_color
-                    spawner.crate = False
-                elif self.crate == spawner.color:
-                    self.crate = None
-                    Game_state.score += 1
+                self.interact_with_spawner(spawner)
 
         self.pos_x += self.vel[0]
         self.pos_y += self.vel[1]
         self.rect.center = (int(self.pos_x), int(self.pos_y))
         self.draw_rect.midbottom = self.rect.midbottom
         self.crate_sprite.rect.midbottom = self.rect.midbottom
+
+    def interact_with_spawner(self, spawner):
+        if self.crate is None and spawner.crate:
+            self.crate = spawner.crate_color
+            spawner.crate = False
+        elif self.crate == spawner.color:
+            self.crate = None
+            Game_state.score += 1
+            if Game_state.score >= Game_state.curr_lvl.score_to_win:
+                if Game_state.curr_lvl.exit_platform is not None:
+                    Game_state.curr_lvl.exit_platform.activated = True
 
     def collide_level_boundaries(self, other):
         x_or_y, drcs, dist = get_coll_side(self.rect.right - other.right, other.left - self.rect.left,
@@ -106,5 +113,6 @@ class Drone(pygame.sprite.Sprite):
         if impact_vel > 0:
             # check for damage if bump
             if impact_vel > self.durability:
-                self.health -= (impact_vel - self.durability)*1.35
+                self.damage = (impact_vel - self.durability)*1.35  # used for screenshake
+                self.health -= self.damage
             self.vel[x_or_y] = 0

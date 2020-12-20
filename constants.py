@@ -19,6 +19,7 @@ class Colors():
     BLACK = (0, 0, 0)
     GRAY = (100, 100, 100)
     GREEN = (0, 255, 0)
+    FINISH_GREEN = (67, 170, 139)
     BG_COLOR = BLACK
     LVL_BG_COLOR = (50, 50, 50)
     LVL_RECT_COLOR = GREEN
