@@ -87,10 +87,7 @@ class Drone(pygame.sprite.Sprite):
             spawner.crate = False
         elif self.crate == spawner.color:
             self.crate = None
-            Game_state.score += 1
-            if Game_state.score >= Game_state.curr_lvl.score_to_win:
-                if Game_state.curr_lvl.exit_platform is not None:
-                    Game_state.curr_lvl.exit_platform.activated = True
+            Game_state.add_score()
 
     def collide_level_boundaries(self, other):
         x_or_y, drcs, dist = get_coll_side(self.rect.right - other.right, other.left - self.rect.left,

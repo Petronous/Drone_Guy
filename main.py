@@ -83,6 +83,8 @@ def handle_key_press():
             Game_state.room = "lvl"
             Game_state.curr_lvl = Game_state.lvl_list[choice]
             Game_state.curr_lvl.time_remaining = Game_state.curr_lvl.init_time
+            Game_state.curr_lvl.exit_platform.activated = False
+            Game_state.curr_lvl.exit_platform.text = ""
             Game_state.drone = drone.Drone()
             Game_state.drone.pos_x, Game_state.drone.pos_y = Game_state.curr_lvl.drone_start_pos
             Game_state.score = 0

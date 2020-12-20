@@ -1,5 +1,5 @@
 import pygame
-from constants import Game_state, Colors
+from constants import Game_state, Colors, Fonts
 from level import RectSprite
 from random import randint
 
@@ -15,15 +15,6 @@ class Text(pygame.sprite.Sprite):
         self.image = font.render(
             text, True, color)
         self.rect = self.image.get_rect()
-
-
-class Fonts():
-    """Basic fonts"""
-    BASE_FONT_SIZE = 20
-    TITLE_FONT_SIZE = 4 * BASE_FONT_SIZE
-    BASIC_FONT = pygame.font.Font('freesansbold.ttf', BASE_FONT_SIZE)
-    BIGGER_FONT = pygame.font.Font('freesansbold.ttf', BASE_FONT_SIZE * 2)
-    TITLE_FONT = pygame.font.Font('freesansbold.ttf', TITLE_FONT_SIZE)
 
 
 def draw_menu():
@@ -152,9 +143,14 @@ def draw_game_over():
                f"Score: {Game_state.score} / {Game_state.curr_lvl.score_to_win}", Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 220)
     txt_group.add(txt)
+    stars = len(Game_state.curr_lvl.exit_platform.text)
+    txt = Text(Fonts.BIGGER_FONT,
+               f"{stars} Star{'s' if stars > 1 else ''}", Colors.TEXT_COLOR)
+    txt.rect.midtop = (WIN_W//2, 270)
+    txt_group.add(txt)
     txt = Text(Fonts.BASIC_FONT,
                "Press SPACE to return to level selection, ESC to quit", Colors.TEXT_COLOR)
-    txt.rect.midtop = (WIN_W//2, 310)
+    txt.rect.midtop = (WIN_W//2, 360)
     txt_group.add(txt)
 
     txt_group.draw(Game_state.curr_lvl.image)

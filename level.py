@@ -1,6 +1,6 @@
 import pygame
 from random import choice
-from constants import Colors, Game_state
+from constants import Colors, Game_state, Fonts
 
 
 class RectSprite(pygame.sprite.Sprite):
@@ -16,7 +16,7 @@ class RectSprite(pygame.sprite.Sprite):
 
 
 class Level(RectSprite):
-    def __init__(self, drone_start_pos=(100, 100), time_remaining=60, score_to_win=10, size=(1728, 972)):
+    def __init__(self, drone_start_pos=(100, 100), time_remaining=60, star_points = [8], size=(1728, 972)):
         super().__init__(size[0], size[1], Colors.LVL_BG_COLOR)
         self.blocks = []
         self.spawners = []
@@ -25,7 +25,9 @@ class Level(RectSprite):
         self.group = pygame.sprite.Group()
         self.init_time = time_remaining
         self.time_remaining = time_remaining
-        self.score_to_win = score_to_win
+        star_points.append(star_points[-1])
+        self.star_points = iter(star_points)
+        self.score_to_win = next(self.star_points)
         Game_state.lvl_list.append(self)
 
     def new_block(self, x, y, width, height):
@@ -51,7 +53,7 @@ class Block(RectSprite):
 
 
 class Platform(RectSprite):
-    def __init__(self, x, y, w, h, group, on_hit, on_color, off_color, max_vel = 1):
+    def __init__(self, x, y, w, h, group, on_hit, on_color, off_color, max_vel = 1, text = "", text_color = Colors.WHITE):
         super().__init__(w, h, color = off_color)
         self.rect.topleft = (x, y)
         self.on_color = on_color
@@ -60,6 +62,9 @@ class Platform(RectSprite):
         self.activated = False
         self.on_hit = on_hit
         self.max_vel = max_vel
+        self.text = text
+        self.text_color = text_color
+        self.update_label()
         group.add(self)
 
     def update(self):
@@ -67,14 +72,23 @@ class Platform(RectSprite):
             if self.color != self.on_color:
                 self.image.fill(self.on_color)
                 self.color = self.on_color
+                self.update_label()
             if self.rect.collidepoint(Game_state.drone.rect.midbottom):
-                print(max(map(abs, Game_state.drone.vel)))
                 if max(map(abs, Game_state.drone.vel)) <= self.max_vel:
                     self.on_hit()
 
         elif self.color != self.off_color:
             self.image.fill(self.on_color)
             self.color = self.on_color
+            self.update_label()
+
+    def update_label(self):
+        txt = Fonts.BASIC_FONT.render(self.text, True, self.text_color)
+        txt_rect = txt.get_rect()
+        img_rect = self.image.get_rect()
+        txt_rect.center = img_rect.center
+        self.image.fill(self.color)
+        self.image.blit(txt, txt_rect)
 
 
 class Spawner(RectSprite):
