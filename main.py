@@ -36,7 +36,6 @@ def main():
 
     # CREATING A CLASS MENU INSTANCE
     Game_state.MENU = graphics.Menu(width=Game_state.WIN_W, height=Game_state.WIN_H)
-    Game_state.MENU.make_rects()
 
     # GAME LOOP
     while True:
@@ -142,6 +141,7 @@ def game_over_handle_input():
     for event in pygame.event.get(pygame.KEYDOWN):
             if event.key == pygame.K_SPACE:
                 Game_state.room = "menu"
+                save_level_stats()
                 load_level_stats()
                 return
 

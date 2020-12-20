@@ -20,31 +20,15 @@ class LevelButton(RectSprite):
     def __init__(self, width, height, name, group, pos=(0, 0)):
         super().__init__(width, height, color=Colors.LVL_RECT_COLOR)
 
-        text = Text(Fonts.BIGGER_FONT, str(name), Colors.TEXT_COLOR)
+        self.text = Text(Fonts.BIGGER_FONT, str(name), Colors.TEXT_COLOR)
 
         self.rect.topleft = pos
-        text.rect.midtop = self.rect.midtop
-
-        highscore = Text(Fonts.BIGGER_FONT, str(Game_state.lvl_stats[name][0]), Colors.TEXT_COLOR)
-        stars = Text(Fonts.STAR_FONT_BIG, Game_state.lvl_stats[name][1]*'*', Colors.TEXT_COLOR)
-
-        highscore.rect.center = self.rect.center
-        text_rect = text.rect.union(highscore.rect)
-        stars.rect.midbottom = self.rect.midbottom
-        text_rect = text_rect.union(stars.rect)
-        text_rect.center = text.rect.center
-
-        text_surf = pygame.Surface(text_rect.size)
-        text_surf.fill(Colors.LVL_RECT_COLOR)
-        text_surf.blits([(x.image, x.rect) for x in (text, highscore, stars)])
+        self.text.rect.midtop = self.rect.midtop
 
         self.hover_color = Colors.LVL_RECT_HOVER_COLOR
         self.normal_color = Colors.LVL_RECT_COLOR
 
-        group.add(self)
-        group.add(text)
-        group.add(highscore)
-        group.add(stars)
+        group.add(self, self.text)
 
     def is_over(self, pos):
         if self.rect.collidepoint(pos):
@@ -102,7 +86,24 @@ class Menu(RectSprite):
                 button_y += BUTTON_H + Y_GAP
                 button_x = X_MARGIN
 
-            button = LevelButton(BUTTON_W, BUTTON_H, Game_state.lvl_list[i].name, self.group, (button_x, button_y))
+            lvl = Game_state.lvl_list[i]
+
+            button = LevelButton(BUTTON_W, BUTTON_H, lvl.name, self.group, (button_x, button_y))
+
+            highscore = Text(Fonts.BIGGER_FONT, str(Game_state.lvl_stats[lvl.name][0]), Colors.TEXT_COLOR)
+            stars = Text(Fonts.STAR_FONT_BIG, Game_state.lvl_stats[lvl.name][1] * '*', Colors.TEXT_COLOR)
+
+            highscore.rect.center = button.rect.center
+            text_rect = button.text.rect.union(highscore.rect)
+            stars.rect.midbottom = button.rect.midbottom
+            text_rect = text_rect.union(stars.rect)
+            text_rect.center = button.text.rect.center
+
+            text_surf = pygame.Surface(text_rect.size)
+            text_surf.fill(Colors.LVL_RECT_COLOR)
+            text_surf.blits([(x.image, x.rect) for x in (button.text, highscore, stars)])
+
+            self.group.add(highscore, stars)
 
             self.lvl_buttons.append(button)
 
@@ -115,9 +116,10 @@ class Menu(RectSprite):
 
 
 def draw_menu():
-    """Scrappy and sloppy basic graphics for lvl select aka menu"""
+    """Basic UI for lvl select aka menu"""
     # Game_state.lvl_rects = []
     Game_state.DISP_SURF.fill(Colors.BG_COLOR)
+    Game_state.MENU.make_rects()
     Game_state.MENU.update()
     Game_state.MENU.group.draw(Game_state.DISP_SURF)
 
@@ -143,13 +145,15 @@ def draw_level(Game_state, level, drone):
                f"Score: {Game_state.score} / {Game_state.curr_lvl.score_to_win}", Colors.TEXT_COLOR)
     txt.rect.topright = (WIN_W - 10, 10)
     txt_group.add(txt)
+
     txt = Text(Fonts.BASIC_FONT,
-               f"Health: {round(Game_state.drone.health)}", Colors.TEXT_COLOR)
-    txt.rect.topright = (WIN_W - 10, 40)
+               f"Health: {round(Game_state.drone.health) * '|'}", Colors.TEXT_COLOR)
+    txt.rect.topleft = (10, 10)
     txt_group.add(txt)
+
     txt = Text(Fonts.BASIC_FONT,
-               f"Remaining time: {round(level.time_remaining)}", Colors.TEXT_COLOR)
-    txt.rect.topright = (WIN_W - 10, 70)
+               f"Time left: {round(level.time_remaining)}", Colors.TEXT_COLOR)
+    txt.rect.topright = (WIN_W - 10, 40)
     txt_group.add(txt)
 
     txt_group.draw(Game_state.curr_lvl.image)
