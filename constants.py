@@ -18,12 +18,13 @@ class Game_state():
         if cls.score >= cls.curr_lvl.score_to_win:
             if cls.curr_lvl.exit_platform is not None:
                 cls.curr_lvl.exit_platform.activated = True
-            try:
-                cls.curr_lvl.score_to_win = next(cls.curr_lvl.star_points)
-                cls.curr_lvl.exit_platform.text += '*'
-                cls.curr_lvl.exit_platform.update_label()
-            except StopIteration:
-                pass
+            while cls.score >= cls.curr_lvl.score_to_win:
+                try:
+                    cls.curr_lvl.score_to_win = next(cls.curr_lvl.star_points)
+                    cls.curr_lvl.exit_platform.text += '*'
+                    cls.curr_lvl.exit_platform.update_label()
+                except StopIteration:
+                    break
 
 
 class Colors():
@@ -35,7 +36,7 @@ class Colors():
     FINISH_GREEN = (67, 170, 139)
     BG_COLOR = BLACK
     LVL_BG_COLOR = (50, 50, 50)
-    LVL_RECT_COLOR = GREEN
+    LVL_RECT_COLOR = (17, 167, 122)
     TEXT_COLOR = WHITE
     DRONE_COLOR = GRAY
 
@@ -48,3 +49,5 @@ class Fonts():
     BIGGER_FONT = pygame.font.Font('fonts/montserrat.ttf', BASE_FONT_SIZE * 2)
     TITLE_FONT = pygame.font.Font(
         'fonts/montserrat-semibold.ttf', TITLE_FONT_SIZE)
+    STAR_FONT_BIG = pygame.font.Font('fonts/star_font.ttf', BASE_FONT_SIZE * 2)
+    STAR_FONT = pygame.font.Font('fonts/star_font.ttf', BASE_FONT_SIZE)

@@ -62,7 +62,7 @@ def draw_menu():
         lvl_rect.rect.topleft = (lvl_rect_x, lvl_rect_y)
         MENU_GRP.add(lvl_rect)
 
-        lvl_num = Text(Fonts.BASIC_FONT, str(i), Colors.TEXT_COLOR)
+        lvl_num = Text(Fonts.BIGGER_FONT, str(i), Colors.TEXT_COLOR)
         lvl_num.rect.center = lvl_rect.rect.center
         MENU_GRP.add(lvl_num)
 
@@ -143,7 +143,7 @@ def draw_game_over():
                f"Score: {Game_state.score}", Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 220)
     txt_group.add(txt)
-    txt = Text(Fonts.BIGGER_FONT,
+    txt = Text(Fonts.STAR_FONT_BIG,
                f"Rating: {Game_state.curr_lvl.exit_platform.text}", Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 270)
     txt_group.add(txt)

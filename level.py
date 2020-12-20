@@ -41,7 +41,7 @@ class Level(RectSprite):
 
     def end_level(self):
         self.time_remaining = 0
-        
+
     def make_exit_platform(self, x, y, width, height):
         self.exit_platform = Platform(x, y, width, height, self.group, self.end_level, Colors.FINISH_GREEN, Colors.GRAY)
         self.blocks.append(self.exit_platform)
@@ -80,12 +80,12 @@ class Platform(RectSprite):
                     self.on_hit()
 
         elif self.color != self.off_color:
-            self.image.fill(self.on_color)
-            self.color = self.on_color
+            self.image.fill(self.off_color)
+            self.color = self.off_color
             self.update_label()
 
     def update_label(self):
-        txt = Fonts.BASIC_FONT.render(self.text, True, self.text_color)
+        txt = Fonts.STAR_FONT.render(self.text, True, self.text_color)
         txt_rect = txt.get_rect()
         img_rect = self.image.get_rect()
         txt_rect.center = img_rect.center
