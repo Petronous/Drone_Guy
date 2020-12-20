@@ -21,9 +21,10 @@ class Fonts():
     """Basic fonts"""
     BASE_FONT_SIZE = 20
     TITLE_FONT_SIZE = 4 * BASE_FONT_SIZE
-    BASIC_FONT = pygame.font.Font('freesansbold.ttf', BASE_FONT_SIZE)
-    BIGGER_FONT = pygame.font.Font('freesansbold.ttf', BASE_FONT_SIZE * 2)
-    TITLE_FONT = pygame.font.Font('freesansbold.ttf', TITLE_FONT_SIZE)
+    BASIC_FONT = pygame.font.Font('fonts/montserrat.ttf', BASE_FONT_SIZE)
+    BIGGER_FONT = pygame.font.Font('fonts/montserrat.ttf', BASE_FONT_SIZE * 2)
+    TITLE_FONT = pygame.font.Font(
+        'fonts/montserrat-semibold.ttf', TITLE_FONT_SIZE)
 
 
 def draw_menu():
