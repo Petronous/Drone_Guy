@@ -11,6 +11,7 @@ class Game_state():
     lvl_rects = []
     curr_lvl = None
     score = 0
+    lvl_stats = {}
 
     @classmethod
     def add_score(cls, score = 1):

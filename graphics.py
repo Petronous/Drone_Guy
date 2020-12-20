@@ -50,21 +50,33 @@ def draw_menu():
 
     lvl_rect_x, lvl_rect_y = X_MARGIN, Y_MARGIN
 
-    for i in range(1, LVL_COUNT+1):
-        if (i - 1) != 0:
+    for i in range(LVL_COUNT):
+        if i != 0:
             lvl_rect_x += LVL_RECT_W + GAP_W
 
-        if (i - 1) % RECTS_PER_ROW == 0 and (i - 1) != 0:
+        if i % RECTS_PER_ROW == 0 and i != 0:
             lvl_rect_y += LVL_RECT_H + GAP_H
             lvl_rect_x = X_MARGIN
 
         lvl_rect = RectSprite(LVL_RECT_W, LVL_RECT_H, Colors.LVL_RECT_COLOR)
         lvl_rect.rect.topleft = (lvl_rect_x, lvl_rect_y)
-        MENU_GRP.add(lvl_rect)
+        Game_state.DISP_SURF.blit(lvl_rect.image, lvl_rect.rect)
 
-        lvl_num = Text(Fonts.BIGGER_FONT, str(i), Colors.TEXT_COLOR)
-        lvl_num.rect.center = lvl_rect.rect.center
-        MENU_GRP.add(lvl_num)
+        lvl = Game_state.lvl_list[i]
+        lvl_num = Text(Fonts.BIGGER_FONT, lvl.name, Colors.TEXT_COLOR)
+        highscore = Text(Fonts.BIGGER_FONT, str(Game_state.lvl_stats[lvl.name][0]), Colors.TEXT_COLOR)
+        stars = Text(Fonts.STAR_FONT_BIG, Game_state.lvl_stats[lvl.name][1]*'*', Colors.TEXT_COLOR)
+
+        highscore.rect.midtop = lvl_num.rect.midbottom
+        text_rect = lvl_num.rect.union(highscore.rect)
+        stars.rect.midtop = highscore.rect.midbottom
+        text_rect = text_rect.union(stars.rect)
+        text_rect.center = lvl_rect.rect.center
+
+        text_surf = pygame.Surface(text_rect.size)
+        text_surf.fill(Colors.LVL_RECT_COLOR)
+        text_surf.blits([(x.image, x.rect) for x in (lvl_num, highscore, stars)])
+        Game_state.DISP_SURF.blit(text_surf, text_rect)
 
         Game_state.lvl_rects.append(lvl_rect)
 

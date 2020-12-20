@@ -27,6 +27,9 @@ def main():
         (WIN_W, WIN_H))
     Game_state.drone = drone.Drone()
 
+    add_missing_levels()
+    load_level_stats()
+
     # CAPTION
     pygame.display.set_caption("Drone guy")
 
@@ -103,8 +106,10 @@ def menu_handle_input():
 def lvl_handle_input():
     Game_state.curr_lvl.time_remaining -= Game_state.FPS_CLOCK.get_time() / 1000
 
+    # GAME OVER
     if Game_state.curr_lvl.time_remaining <= 0 or Game_state.drone.health <= 0:
         Game_state.room = "game_over"
+        save_level_stats()
         return
 
     # HANDLE EVENTS
@@ -140,9 +145,53 @@ def game_over_handle_input():
     for event in pygame.event.get(pygame.KEYDOWN):
             if event.key == pygame.K_SPACE:
                 Game_state.room = "menu"
+                load_level_stats()
                 return
 
     graphics.draw_game_over()
+
+
+def save_level_stats():
+    lines = []
+    with open("data.txt", 'r') as fr:
+        lvl = Game_state.curr_lvl
+        lvl_ix = None
+        for a, line in enumerate(fr):
+            s = line.split()
+            if s[0] == str(lvl.name):
+                lvl_ix = a
+                line = f"{lvl.name} {max(Game_state.score, int(s[1]))} {max(len(lvl.exit_platform.text), int(s[2]))}\n"
+            lines.append(line)
+        assert lvl_ix is not None, "LEVEL SAVE NOT FOUND"
+
+    if len(lines) > 0:
+        with open("data.txt", 'w') as fw:
+            fw.write("".join(lines))
+
+
+def load_level_stats():
+    with open("data.txt", 'r') as fr:
+        for line in fr:
+            s = line.split()
+            Game_state.lvl_stats[s[0]] = (int(s[1]), int(s[2]))
+
+
+def add_missing_levels():
+    lvl_names = [str(i.name) for i in Game_state.lvl_list]
+    lines = []
+    try:
+        fr = open("data.txt", 'r')
+        for line in fr:
+            s = line.split()
+            lvl_names.remove(s[0])
+            lines.append(line)
+    except:
+        pass
+    fw = open("data.txt", 'w')
+    for i in lvl_names:
+        lines.append(f"{i} 0 0\n")
+    fw.write("".join(lines))
+    fw.close()
 
 
 if __name__ == "__main__":

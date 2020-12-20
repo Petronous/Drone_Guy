@@ -16,8 +16,9 @@ class RectSprite(pygame.sprite.Sprite):
 
 
 class Level(RectSprite):
-    def __init__(self, drone_start_pos=(100, 100), time_remaining=60, star_points = [8], size=(1728, 972)):
+    def __init__(self, name, drone_start_pos=(100, 100), time_remaining=60, star_points = [8], size=(1728, 972)):
         super().__init__(size[0], size[1], Colors.LVL_BG_COLOR)
+        self.name = str(name)
         self.blocks = []
         self.spawners = []
         self.exit_platform = None
