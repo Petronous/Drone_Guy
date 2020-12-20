@@ -130,7 +130,7 @@ def draw_game_over():
     if Game_state.drone.health <= 0:
         reason = "Your drone broke down!"
 
-    elif Game_state.score >= Game_state.curr_lvl.score_to_win:
+    elif Game_state.score >= Game_state.curr_lvl.min_score_to_win:
         reason = "You completed the level!"
 
     else:
@@ -140,12 +140,11 @@ def draw_game_over():
     txt.rect.midtop = (WIN_W//2, 150)
     txt_group.add(txt)
     txt = Text(Fonts.BIGGER_FONT,
-               f"Score: {Game_state.score} / {Game_state.curr_lvl.score_to_win}", Colors.TEXT_COLOR)
+               f"Score: {Game_state.score}", Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 220)
     txt_group.add(txt)
-    stars = len(Game_state.curr_lvl.exit_platform.text)
     txt = Text(Fonts.BIGGER_FONT,
-               f"{stars} Star{'s' if stars > 1 else ''}", Colors.TEXT_COLOR)
+               f"Rating: {Game_state.curr_lvl.exit_platform.text}", Colors.TEXT_COLOR)
     txt.rect.midtop = (WIN_W//2, 270)
     txt_group.add(txt)
     txt = Text(Fonts.BASIC_FONT,

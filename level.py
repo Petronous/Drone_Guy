@@ -25,7 +25,9 @@ class Level(RectSprite):
         self.group = pygame.sprite.Group()
         self.init_time = time_remaining
         self.time_remaining = time_remaining
+        self.star_ratings = star_points
         star_points.append(star_points[-1])
+        self.min_score_to_win = star_points[0]
         self.star_points = iter(star_points)
         self.score_to_win = next(self.star_points)
         Game_state.lvl_list.append(self)
@@ -39,7 +41,7 @@ class Level(RectSprite):
 
     def end_level(self):
         self.time_remaining = 0
-
+        
     def make_exit_platform(self, x, y, width, height):
         self.exit_platform = Platform(x, y, width, height, self.group, self.end_level, Colors.FINISH_GREEN, Colors.GRAY)
         self.blocks.append(self.exit_platform)

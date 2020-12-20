@@ -37,8 +37,6 @@ def main():
 
         handle_key_press()
 
-        handle_resize()
-
         pygame.display.update()
         Game_state.FPS_CLOCK.tick(FPS)
 
@@ -60,83 +58,91 @@ def check_for_quit():
         pygame.event.post(event)
 
 
-def handle_resize():
-    """ Doesn't work at all """
-    # for event in pygame.event.get(pygame.VIDEORESIZE):
-    #     print("VIDEORESIZE")
-    #     DISP_INFO = pygame.display.Info()
-    #     WIN_W = DISP_INFO.current_w
-    #     WIN_H = DISP_INFO.current_h
-    #     Game_state.DISP_SURF = pygame.display.set_mode((WIN_W, WIN_H), pygame.RESIZABLE)
-    #     print(WIN_H, WIN_W)
-    pass
-
-
 def handle_key_press():
     """Handles input from user depending on Game_state.room"""
     if Game_state.room == "menu":
-        graphics.draw_menu()
-        # RETURN VALUE IS LVL NUMBER CHOSEN - 1 OR NONE IF NO LVL WAS CHOSEN
-        choice = menu_handle_input()
-        # RUN CHOSEN LVL
-        if choice is not None:
-            Game_state.room = "lvl"
-            Game_state.curr_lvl = Game_state.lvl_list[choice]
-            Game_state.curr_lvl.time_remaining = Game_state.curr_lvl.init_time
-            Game_state.curr_lvl.exit_platform.activated = False
-            Game_state.curr_lvl.exit_platform.text = ""
-            Game_state.drone = drone.Drone()
-            Game_state.drone.pos_x, Game_state.drone.pos_y = Game_state.curr_lvl.drone_start_pos
-            Game_state.score = 0
+        menu_handle_input()
 
     if Game_state.room == "lvl":
-        Game_state.curr_lvl.time_remaining -= Game_state.FPS_CLOCK.get_time() / 1000
-        if Game_state.curr_lvl.time_remaining <= 0 or Game_state.drone.health <= 0:
-            Game_state.room = "game_over"
-            return
-        # HANDLE EVENTS
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP or event.key == pygame.K_w:
-                    Game_state.drone.control_v = -1
-                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    Game_state.drone.control_v = 1
-                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                    Game_state.drone.control_h = -1
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                    Game_state.drone.control_h = 1
-
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP or event.key == pygame.K_w:
-                    Game_state.drone.control_v = 0
-                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    Game_state.drone.control_v = 0
-                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                    Game_state.drone.control_h = 0
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                    Game_state.drone.control_h = 0
-
-            else:
-                pygame.event.post(event)
-
-        Game_state.drone.update()
-        graphics.draw_level(Game_state, Game_state.curr_lvl, Game_state.drone)
+        lvl_handle_input()
 
     if Game_state.room == "game_over":
-        for event in pygame.event.get(pygame.KEYDOWN):
-            if event.key == pygame.K_SPACE:
-                Game_state.room = "menu"
-                return
-
-        graphics.draw_game_over()
+        game_over_handle_input()
 
 
 def menu_handle_input():
     """Return the index of the lvl the user has chosen by clicking on it's rect (=> 0 = LVL 1), if nothing was chosen returns None"""
+    graphics.draw_menu()
+    # RETURN VALUE IS LVL NUMBER CHOSEN - 1 OR NONE IF NO LVL WAS CHOSEN
+    choice = None
     for event in pygame.event.get(pygame.MOUSEBUTTONUP):
         for lvl_rect in Game_state.lvl_rects:
             if lvl_rect.rect.collidepoint(pygame.mouse.get_pos()):
-                return Game_state.lvl_rects.index(lvl_rect)
+                choice = Game_state.lvl_rects.index(lvl_rect)
+
+    # RUN CHOSEN LVL
+    if choice is not None:
+        Game_state.room = "lvl"
+        Game_state.curr_lvl = Game_state.lvl_list[choice]
+        Game_state.curr_lvl.time_remaining = Game_state.curr_lvl.init_time
+        Game_state.curr_lvl.exit_platform.activated = False
+        Game_state.curr_lvl.exit_platform.text = ""
+
+        for spawner in Game_state.curr_lvl.spawners:
+            spawner.crate = False
+            spawner.crate_cd = 0
+
+        Game_state.curr_lvl.star_points = iter(Game_state.curr_lvl.star_ratings)
+        Game_state.curr_lvl.score_to_win = next(Game_state.curr_lvl.star_points)
+
+        Game_state.drone = drone.Drone()
+        Game_state.drone.pos_x, Game_state.drone.pos_y = Game_state.curr_lvl.drone_start_pos
+        Game_state.score = 0
+
+
+def lvl_handle_input():
+    Game_state.curr_lvl.time_remaining -= Game_state.FPS_CLOCK.get_time() / 1000
+
+    if Game_state.curr_lvl.time_remaining <= 0 or Game_state.drone.health <= 0:
+        Game_state.room = "game_over"
+        return
+
+    # HANDLE EVENTS
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP or event.key == pygame.K_w:
+                Game_state.drone.control_v = -1
+            if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                Game_state.drone.control_v = 1
+            if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                Game_state.drone.control_h = -1
+            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                Game_state.drone.control_h = 1
+
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP or event.key == pygame.K_w:
+                Game_state.drone.control_v = 0
+            if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                Game_state.drone.control_v = 0
+            if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                Game_state.drone.control_h = 0
+            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                Game_state.drone.control_h = 0
+
+        else:
+            pygame.event.post(event)
+
+    Game_state.drone.update()
+    graphics.draw_level(Game_state, Game_state.curr_lvl, Game_state.drone)
+
+
+def game_over_handle_input():
+    for event in pygame.event.get(pygame.KEYDOWN):
+            if event.key == pygame.K_SPACE:
+                Game_state.room = "menu"
+                return
+
+    graphics.draw_game_over()
 
 
 if __name__ == "__main__":
