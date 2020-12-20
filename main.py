@@ -18,13 +18,13 @@ def main():
     # DISPLAY SURFACE
     # WIDTH AND HEIGHT
     DISP_INFO = pygame.display.Info()
-    WIN_W = round(DISP_INFO.current_w * 0.9)
-    WIN_H = round(DISP_INFO.current_h * 0.9)
-    print(WIN_W, WIN_H)
+    Game_state.WIN_W = round(DISP_INFO.current_w * 0.9)
+    Game_state.WIN_H = round(DISP_INFO.current_h * 0.9)
+    print(Game_state.WIN_W, Game_state.WIN_H)
 
     # INIT
     Game_state.DISP_SURF = pygame.display.set_mode(
-        (WIN_W, WIN_H))
+        (Game_state.WIN_W, Game_state.WIN_H))
     Game_state.drone = drone.Drone()
 
     add_missing_levels()
@@ -32,6 +32,11 @@ def main():
 
     # CAPTION
     pygame.display.set_caption("Drone guy")
+
+
+    # CREATING A CLASS MENU INSTANCE
+    Game_state.MENU = graphics.Menu(width=Game_state.WIN_W, height=Game_state.WIN_H)
+    Game_state.MENU.make_rects()
 
     # GAME LOOP
     while True:
@@ -78,25 +83,17 @@ def menu_handle_input():
     graphics.draw_menu()
     # RETURN VALUE IS LVL NUMBER CHOSEN - 1 OR NONE IF NO LVL WAS CHOSEN
     choice = None
-    for event in pygame.event.get(pygame.MOUSEBUTTONUP):
-        for lvl_rect in Game_state.lvl_rects:
-            if lvl_rect.rect.collidepoint(pygame.mouse.get_pos()):
-                choice = Game_state.lvl_rects.index(lvl_rect)
+    for button in Game_state.MENU.lvl_buttons:
+        if button.is_over(pygame.mouse.get_pos()):
+            for event in pygame.event.get(pygame.MOUSEBUTTONUP):
+                choice = Game_state.MENU.lvl_buttons.index(button)
 
     # RUN CHOSEN LVL
     if choice is not None:
         Game_state.room = "lvl"
         Game_state.curr_lvl = Game_state.lvl_list[choice]
-        Game_state.curr_lvl.time_remaining = Game_state.curr_lvl.init_time
-        Game_state.curr_lvl.exit_platform.activated = False
-        Game_state.curr_lvl.exit_platform.text = ""
 
-        for spawner in Game_state.curr_lvl.spawners:
-            spawner.crate = False
-            spawner.crate_cd = 0
-
-        Game_state.curr_lvl.star_points = iter(Game_state.curr_lvl.star_ratings)
-        Game_state.curr_lvl.score_to_win = next(Game_state.curr_lvl.star_points)
+        Game_state.curr_lvl.setup()
 
         Game_state.drone = drone.Drone()
         Game_state.drone.pos_x, Game_state.drone.pos_y = Game_state.curr_lvl.drone_start_pos

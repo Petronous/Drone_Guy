@@ -12,75 +12,114 @@ class Text(pygame.sprite.Sprite):
 
     def __init__(self, font, text, color):
         super().__init__()
-        self.image = font.render(
-            text, True, color)
+        self.image = font.render(text, True, color)
         self.rect = self.image.get_rect()
+
+
+class LevelButton(RectSprite):
+    def __init__(self, width, height, name, group, pos=(0, 0)):
+        super().__init__(width, height, color=Colors.LVL_RECT_COLOR)
+
+        text = Text(Fonts.BIGGER_FONT, str(name), Colors.TEXT_COLOR)
+
+        self.rect.topleft = pos
+        text.rect.midtop = self.rect.midtop
+
+        highscore = Text(Fonts.BIGGER_FONT, str(Game_state.lvl_stats[name][0]), Colors.TEXT_COLOR)
+        stars = Text(Fonts.STAR_FONT_BIG, Game_state.lvl_stats[name][1]*'*', Colors.TEXT_COLOR)
+
+        highscore.rect.center = self.rect.center
+        text_rect = text.rect.union(highscore.rect)
+        stars.rect.midbottom = self.rect.midbottom
+        text_rect = text_rect.union(stars.rect)
+        text_rect.center = text.rect.center
+
+        text_surf = pygame.Surface(text_rect.size)
+        text_surf.fill(Colors.LVL_RECT_COLOR)
+        text_surf.blits([(x.image, x.rect) for x in (text, highscore, stars)])
+
+        self.hover_color = Colors.LVL_RECT_HOVER_COLOR
+        self.normal_color = Colors.LVL_RECT_COLOR
+
+        group.add(self)
+        group.add(text)
+        group.add(highscore)
+        group.add(stars)
+
+    def is_over(self, pos):
+        if self.rect.collidepoint(pos):
+            return True
+        else:
+            return False
+
+    def update(self, mouse_pos):
+        self.color = self.normal_color
+
+        if self.is_over(mouse_pos):
+            self.color = self.hover_color
+        
+        self.image.fill(self.color)
+
+
+class Menu(RectSprite):
+    def __init__(self, width, height, color=Colors.BG_COLOR):
+        super().__init__(width, height, color)
+        self.lvl_buttons = []
+        self.group = pygame.sprite.Group()
+
+        self.title = Text(Fonts.TITLE_FONT, "Level Selection", Colors.TEXT_COLOR)
+        self.title.rect.center = (round(Game_state.WIN_W * 0.5), round(Game_state.WIN_H * 0.1))
+        self.group.add(self.title)
+
+    def make_rects(self):
+        # LEVEL COUNT
+        LVL_COUNT = len(Game_state.lvl_list)
+
+        # MARGINS
+        X_MARGIN = round(Game_state.WIN_W * 0.05)
+        Y_MARGIN = round(Game_state.WIN_H * 0.2)
+
+        # GAPS BETWEEN BUTTONS
+        X_GAP = round(Game_state.WIN_W * 0.0025)
+        Y_GAP = round(Game_state.WIN_H * 0.0025)
+
+        # BUTTONS PER ONE ROW, ONE COLUMN
+        BUTTONS_PER_ROW = 3
+        BUTTONS_PER_COL = max(round(LVL_COUNT / BUTTONS_PER_ROW), 1)
+
+        # BUTTON WIDTH AND HEIGHT
+        BUTTON_W = ((Game_state.WIN_W - 2 * X_MARGIN - ((BUTTONS_PER_ROW - 1) * X_GAP)) // BUTTONS_PER_ROW)
+        BUTTON_H = ((Game_state.WIN_H - 2 * Y_MARGIN - ((BUTTONS_PER_COL - 1) * Y_GAP)) // BUTTONS_PER_COL)
+
+        # FIRST BUTTON'S X AND Y COORDINATES
+        button_x, button_y = X_MARGIN, Y_MARGIN
+
+        for i in range(LVL_COUNT):
+            if i != 0:
+                button_x += BUTTON_W + X_GAP
+
+            if i % BUTTONS_PER_ROW == 0 and i != 0:
+                button_y += BUTTON_H + Y_GAP
+                button_x = X_MARGIN
+
+            button = LevelButton(BUTTON_W, BUTTON_H, Game_state.lvl_list[i].name, self.group, (button_x, button_y))
+
+            self.lvl_buttons.append(button)
+
+
+    def update(self):
+        for button in self.lvl_buttons:
+            button.update(pygame.mouse.get_pos())
+
+    
 
 
 def draw_menu():
     """Scrappy and sloppy basic graphics for lvl select aka menu"""
-    # GET WINDOW DIMENSIONS
-    WIN_W, WIN_H = Game_state.DISP_SURF.get_size()
-
-    Game_state.lvl_rects = []
-
-    # FILL THE WINDOW WITH BG_COLOR
+    # Game_state.lvl_rects = []
     Game_state.DISP_SURF.fill(Colors.BG_COLOR)
-
-    # LVL SELECT TEXT
-    LVL_SELECT = Text(
-        Fonts.TITLE_FONT, "Level selection", Colors.TEXT_COLOR)
-    LVL_SELECT.rect.midtop = (WIN_W * 0.5, WIN_H * 0.05)
-
-    # CREATE MENU SPRITE GROUP
-    MENU_GRP = pygame.sprite.Group()
-    MENU_GRP.add(LVL_SELECT)
-
-    # EVERYTHING AFTER THIS COMMENT SHOULD BE REVISITED
-    X_MARGIN = WIN_W * 0.025
-    Y_MARGIN = WIN_H * 0.2
-    GAP_W = 0.0025 * WIN_W
-    GAP_H = 0.0025 * WIN_H
-    LVL_COUNT = len(Game_state.lvl_list)
-    RECTS_PER_ROW = 5
-    LVL_RECT_W = (WIN_W - 2 * X_MARGIN - (LVL_COUNT - 1)
-                  * GAP_W) // RECTS_PER_ROW
-    LVL_RECT_H = (WIN_H - 2 * Y_MARGIN - (LVL_COUNT - 1)
-                  * GAP_H) // (LVL_COUNT + 1 // RECTS_PER_ROW)
-
-    lvl_rect_x, lvl_rect_y = X_MARGIN, Y_MARGIN
-
-    for i in range(LVL_COUNT):
-        if i != 0:
-            lvl_rect_x += LVL_RECT_W + GAP_W
-
-        if i % RECTS_PER_ROW == 0 and i != 0:
-            lvl_rect_y += LVL_RECT_H + GAP_H
-            lvl_rect_x = X_MARGIN
-
-        lvl_rect = RectSprite(LVL_RECT_W, LVL_RECT_H, Colors.LVL_RECT_COLOR)
-        lvl_rect.rect.topleft = (lvl_rect_x, lvl_rect_y)
-        Game_state.DISP_SURF.blit(lvl_rect.image, lvl_rect.rect)
-
-        lvl = Game_state.lvl_list[i]
-        lvl_num = Text(Fonts.BIGGER_FONT, lvl.name, Colors.TEXT_COLOR)
-        highscore = Text(Fonts.BIGGER_FONT, str(Game_state.lvl_stats[lvl.name][0]), Colors.TEXT_COLOR)
-        stars = Text(Fonts.STAR_FONT_BIG, Game_state.lvl_stats[lvl.name][1]*'*', Colors.TEXT_COLOR)
-
-        highscore.rect.midtop = lvl_num.rect.midbottom
-        text_rect = lvl_num.rect.union(highscore.rect)
-        stars.rect.midtop = highscore.rect.midbottom
-        text_rect = text_rect.union(stars.rect)
-        text_rect.center = lvl_rect.rect.center
-
-        text_surf = pygame.Surface(text_rect.size)
-        text_surf.fill(Colors.LVL_RECT_COLOR)
-        text_surf.blits([(x.image, x.rect) for x in (lvl_num, highscore, stars)])
-        Game_state.DISP_SURF.blit(text_surf, text_rect)
-
-        Game_state.lvl_rects.append(lvl_rect)
-
-    MENU_GRP.draw(Game_state.DISP_SURF)
+    Game_state.MENU.update()
+    Game_state.MENU.group.draw(Game_state.DISP_SURF)
 
 
 def draw_drone(Game_state, drone):
@@ -170,7 +209,7 @@ def draw_game_over():
 
 def resize_levelsurf():
     WIN_W, WIN_H = Game_state.curr_lvl.image.get_size()
-    REAL_W, REAL_H = Game_state.DISP_SURF.get_size()
+    REAL_W, REAL_H = Game_state.WIN_W, Game_state.WIN_H
     diff_x, diff_y = REAL_W/WIN_W, REAL_H/WIN_H
     zoom = min(diff_x, diff_y)
     return pygame.transform.smoothscale(Game_state.curr_lvl.image, (int(WIN_W*zoom), int(WIN_H*zoom)))

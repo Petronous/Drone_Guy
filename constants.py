@@ -8,11 +8,14 @@ class Game_state():
     room = "menu"
     drone = None
     lvl_list = []
-    lvl_rects = []
     curr_lvl = None
     score = 0
     lvl_stats = {}
+    WIN_W = None
+    WIN_H = None
+    MENU = None
 
+    
     @classmethod
     def add_score(cls, score = 1):
         cls.score += score
@@ -38,6 +41,7 @@ class Colors():
     BG_COLOR = BLACK
     LVL_BG_COLOR = (50, 50, 50)
     LVL_RECT_COLOR = (17, 167, 122)
+    LVL_RECT_HOVER_COLOR = (10, 100, 73)
     TEXT_COLOR = WHITE
     DRONE_COLOR = GRAY
 

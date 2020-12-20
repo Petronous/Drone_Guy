@@ -47,6 +47,17 @@ class Level(RectSprite):
         self.exit_platform = Platform(x, y, width, height, self.group, self.end_level, Colors.FINISH_GREEN, Colors.GRAY)
         self.blocks.append(self.exit_platform)
 
+    def setup(self):
+        Game_state.curr_lvl.time_remaining = Game_state.curr_lvl.init_time
+        Game_state.curr_lvl.exit_platform.activated = False
+        Game_state.curr_lvl.exit_platform.text = ""
+
+        for spawner in Game_state.curr_lvl.spawners:
+            spawner.crate = False
+            spawner.crate_cd = 0
+
+        Game_state.curr_lvl.star_points = iter(Game_state.curr_lvl.star_ratings)
+        Game_state.curr_lvl.score_to_win = next(Game_state.curr_lvl.star_points)
 
 class Block(RectSprite):
     def __init__(self, x, y, width, height, group):
