@@ -31,22 +31,29 @@ test.new_text("Press SPACE to exit the level and get back to the level selection
 
 
 # LVL 2
-lvl2 = Level('Tunnel', size=(1382, 778), star_points = [10, 17, 24], time_remaining=180, drone_start_pos = (10, 500))
+lvl2 = Level('Baskets', size=(1382, 778), star_points = [15, 27, 35], time_remaining=180, drone_start_pos = (10, 500))
 # SPAWNERS
-lvl2.new_spawner(600, 300, 100, 30, (0, 0, 255))  # 1
-lvl2.new_spawner(800, 300, 100, 30, (0, 255, 0))  # 2
+lvl2.new_spawner(671, 300, 100, 30, (0, 0, 255))  # 1
+lvl2.new_spawner(671, 700, 100, 30, (0, 255, 0))  # 2
 lvl2.new_spawner(100, 700, 100, 30, (255, 255, 0))  # 3
 lvl2.new_spawner(1282, 700, 100, 30, (255, 0, 0))  # 4
+lvl2.new_spawner(100, 300, 100, 30, (255, 0, 255)) # 5
+lvl2.new_spawner(1282, 300, 100, 30, (0, 255, 255)) # 5
 
 # BLOCKS
-lvl2.new_block(500, 250, 50, 150)  # 1
-lvl2.new_block(900, 250, 50, 150)  # 2
-lvl2.new_block(700, 0, 50, 650)  # 3
-lvl2.new_block(500, 400, 450, 50)  # 4
+lvl2.new_block(500-34, 250, 50, 150)  # 1
+lvl2.new_block(900-34, 250, 50, 150)  # 2
+lvl2.new_block(700-34, 0, 50, 250)  # 3
+lvl2.new_block(500-34, 400, 450, 50)  # 4
 lvl2.new_block(100, 550, 200, 50)  # 5
 lvl2.new_block(1082, 550, 300, 50)  # 6
-lvl2.new_block(500, 628, 50, 150)  # 7
-lvl2.new_block(900, 628, 50, 150)  # 8
+lvl2.new_block(500-34, 628, 50, 150)  # 7
+lvl2.new_block(900-34, 628, 50, 150)  # 8
+lvl2.new_block(700-34, 400, 50, 200)  # 9
+lvl2.new_block(0, 400, 300, 50)  # 10
+lvl2.new_block(1082, 400, 300, 50)  #12
+lvl2.new_block(250, 250, 50, 150)  # 13
+lvl2.new_block(1082, 250, 50, 150)  # 14
 
 # PLATFORMS
 lvl2.make_exit_platform(0, 550, 100, 50)  # Exit platform
