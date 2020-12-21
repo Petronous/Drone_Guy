@@ -45,6 +45,8 @@ def main():
         handle_key_press()
 
         pygame.display.update()
+        pygame.event.get()
+
         Game_state.FPS_CLOCK.tick(FPS)
 
 
