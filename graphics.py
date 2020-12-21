@@ -10,8 +10,10 @@ class LevelButton(RectSprite):
     def __init__(self, width, height, name, group, pos=(0, 0)):
         super().__init__(width, height, color=Colors.LVL_RECT_COLOR)
 
-        self.name = Text(Fonts.BIGGER_FONT, str(name), Colors.TEXT_COLOR)
-        stats = Game_state.lvl_stats[self.name.text]
+        self.name = str(name)
+        label_text = str(name) if Game_state.lvl_stats[str(name)][2] else "(Locked)"
+        self.label = Text(Fonts.BIGGER_FONT, label_text, Colors.TEXT_COLOR)
+        stats = Game_state.lvl_stats[self.name]
         self.highscore = Text(Fonts.BIGGER_FONT, str(stats[0]), Colors.TEXT_COLOR)
         self.stars = Text(Fonts.STAR_FONT_BIG, stats[1] * '*', Colors.TEXT_COLOR)
 
@@ -20,14 +22,14 @@ class LevelButton(RectSprite):
         self.highscore.rect.center = self.rect.center
         tx = self.rect.centerx
         ty = avg(self.rect.top, self.highscore.rect.top)
-        self.name.rect.center = (tx,ty)
+        self.label.rect.center = (tx,ty)
         ty = avg(self.rect.bottom, self.highscore.rect.bottom)
         self.stars.rect.center = (tx,ty)
 
         self.hover_color = Colors.LVL_RECT_HOVER_COLOR
         self.normal_color = Colors.LVL_RECT_COLOR
 
-        group.add(self, self.name, self.highscore, self.stars)
+        group.add(self, self.label, self.highscore, self.stars)
 
     def is_over(self, pos):
         if self.rect.collidepoint(pos):
@@ -36,13 +38,11 @@ class LevelButton(RectSprite):
             return False
 
     def update(self, mouse_pos):
-        stats = Game_state.lvl_stats[self.name.text]
+        stats = Game_state.lvl_stats[self.name]
+        label_text = self.name if stats[2] else "(Locked)"
+        highscore = stats[0] if stats[0] > 0 else ""
 
-        if stats[0] > 0:
-            highscore = stats[0]
-        else:
-            highscore = ""
-
+        self.label.update_text(label_text)
         self.highscore.update_text(highscore)
         self.stars.update_text(stats[1]*'*')
 
@@ -51,6 +51,9 @@ class LevelButton(RectSprite):
             self.color = self.hover_color
 
         self.image.fill(self.color)
+
+    def get_unlocked(self):
+        return Game_state.lvl_stats[self.name][2]
 
 
 class Menu(RectSprite):

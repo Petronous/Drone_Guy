@@ -86,7 +86,8 @@ def menu_handle_input():
     for button in Game_state.MENU.lvl_buttons:
         if button.is_over(pygame.mouse.get_pos()):
             for event in pygame.event.get(pygame.MOUSEBUTTONDOWN):
-                choice = Game_state.MENU.lvl_buttons.index(button)
+                if button.get_unlocked():
+                    choice = Game_state.MENU.lvl_buttons.index(button)
 
     # RUN CHOSEN LVL
     if choice is not None:
@@ -116,7 +117,7 @@ def lvl_handle_input():
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                Game_state.room = "menu"
+                Game_state.curr_lvl.end_level()
             if event.key == pygame.K_UP or event.key == pygame.K_w:
                 Game_state.drone.control_v = -1
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
@@ -178,6 +179,11 @@ def load_level_stats():
         for line in fr:
             s = line.split()
             Game_state.lvl_stats[s[0]] = (int(s[1]), int(s[2]))
+        next_unlocked = True
+        for lvl in Game_state.lvl_list:
+            Game_state.lvl_stats[lvl.name] += (next_unlocked,)
+            if Game_state.lvl_stats[lvl.name][1] == 0:
+                next_unlocked = False
 
 
 def add_missing_levels():
