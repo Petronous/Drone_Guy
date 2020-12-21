@@ -96,7 +96,8 @@ def menu_handle_input():
         Game_state.curr_lvl.setup()
 
         Game_state.drone = drone.Drone()
-        Game_state.drone.pos_x, Game_state.drone.pos_y = Game_state.curr_lvl.drone_start_pos
+        Game_state.drone.rect.topleft = Game_state.curr_lvl.drone_start_pos
+        Game_state.drone.pos_x, Game_state.drone.pos_y = Game_state.drone.rect.center
         Game_state.score = 0
 
         graphics.make_lvl_UI()
