@@ -37,7 +37,13 @@ class LevelButton(RectSprite):
 
     def update(self, mouse_pos):
         stats = Game_state.lvl_stats[self.name.text]
-        self.highscore.update_text(stats[0])
+        
+        if stats[0] > 0:
+            highscore = stats[0]
+        else:
+            highscore = ""
+
+        self.highscore.update_text(highscore)
         self.stars.update_text(stats[1]*'*')
 
         self.color = self.normal_color

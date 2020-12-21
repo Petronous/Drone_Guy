@@ -114,6 +114,8 @@ def lvl_handle_input():
     # HANDLE EVENTS
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                Game_state.room = "menu"
             if event.key == pygame.K_UP or event.key == pygame.K_w:
                 Game_state.drone.control_v = -1
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:

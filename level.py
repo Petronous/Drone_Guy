@@ -34,6 +34,12 @@ class Level(RectSprite):
         self.spawners.append(
             Spawner(x, y, width, height, color, self.group))
 
+    def new_text(self, text, pos=(0, 0), font=Fonts.BASIC_FONT, color=Colors.TEXT_COLOR):
+        text = Text(font, text, color)
+        self.group.add(text)
+        text.rect.center = pos
+
+
     def end_level(self):
         self.time_remaining = 0
 
