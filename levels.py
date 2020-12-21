@@ -10,8 +10,8 @@ test = Level('Tutorial', size=(1382, 778), star_points = [1, 2, 3], time_remaini
 # test.new_block(400, 650, 1300, 50)  # 2
 # SPAWNERS
 test.new_spawner(150, 500, 150, 30, (255, 0, 0))  # 1
-test.new_spawner(900, 700, 150, 30, (255, 255, 0))  # 2
-test.new_spawner(1200, 300, 150, 30, (255, 0, 255))  # 3
+test.new_spawner(900, 700, 150, 30, (0, 255, 0))  # 2
+test.new_spawner(1200, 300, 150, 30, (0, 0, 255))  # 3
 # PLATFORMS
 test.make_exit_platform(400, 650, 100, 50)  # Exit platform
 # TEXT
