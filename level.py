@@ -1,6 +1,6 @@
 import pygame
 from random import choice
-from constants import Colors, Game_state, Fonts
+from constants import Colors, Game_state, Fonts, Text
 
 
 class RectSprite(pygame.sprite.Sprite):
@@ -77,9 +77,10 @@ class Platform(RectSprite):
         self.on_hit = on_hit
         self.max_vel = max_vel
         self.text = text
-        self.text_color = text_color
+        self.label = Text(Fonts.STAR_FONT, text, text_color)
+        self.label.rect.center = self.rect.center
         self.update_label()
-        group.add(self)
+        group.add(self, self.label)
 
     def update(self):
         if self.activated:
@@ -97,12 +98,8 @@ class Platform(RectSprite):
             self.update_label()
 
     def update_label(self):
-        txt = Fonts.STAR_FONT.render(self.text, True, self.text_color)
-        txt_rect = txt.get_rect()
-        img_rect = self.image.get_rect()
-        txt_rect.center = img_rect.center
-        self.image.fill(self.color)
-        self.image.blit(txt, txt_rect)
+        print(self.text, self.label.text)
+        self.label.update_text(self.text)
 
 
 class Spawner(RectSprite):

@@ -1,31 +1,10 @@
 import pygame
-from constants import Game_state, Colors, Fonts, avg
+from constants import Game_state, Colors, Fonts, avg, Text
 from level import RectSprite
 from random import randint
 
 if not pygame.get_init():
     pygame.init()
-
-
-class Text(pygame.sprite.Sprite):
-    """Creates a sprite containing the text"""
-
-    def __init__(self, font, text, color):
-        super().__init__()
-        self.font = font
-        self.color = color
-        self.text = text
-        self.image = font.render(text, True, color)
-        self.rect = self.image.get_rect()
-
-    def update_text(self, text):
-        text = str(text)
-        if text != self.text:
-            self.text = text
-            self.image = self.font.render(text, True, self.color)
-            n_rect = self.image.get_rect()
-            n_rect.center = self.rect.center
-            self.rect = n_rect
 
 
 class LevelButton(RectSprite):
