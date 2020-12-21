@@ -86,7 +86,7 @@ lvl3.new_block(1032, 600, 200, 50)  # 13
 lvl3.make_exit_platform(691, 500, 50, 50) # Exit platform
 
 # LVL 4
-lvl4 = Level(name="Slalom", time_remaining=180, star_points=[5, 9, 13], size=(1382, 778), drone_start_pos=(1282, 275))
+lvl4 = Level(name="Slalom", time_remaining=180, star_points=[5, 10, 15], size=(1382, 778), drone_start_pos=(1282, 275))
 
 # SPAWNERS
 lvl4.new_spawner(25, 100, 100, 30, (255, 0, 0)) # 1
