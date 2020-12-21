@@ -59,6 +59,18 @@ class Fonts():
     STAR_FONT = pygame.font.Font('fonts/star_font.ttf', BASE_FONT_SIZE)
 
 
+class RectSprite(pygame.sprite.Sprite):
+    def __init__(self, width, height, color = Colors.BLACK, image_path = None):
+        super().__init__()
+        if image_path is None:
+            self.image = pygame.Surface((width, height))
+            self.image.fill(color)
+        else:
+            self.image = pygame.image.load(image_path)
+            self.image = pygame.transform.smoothscale(self.image, (width, height))
+        self.rect = self.image.get_rect()
+
+
 class Text(pygame.sprite.Sprite):
     """Creates a sprite containing the text"""
 

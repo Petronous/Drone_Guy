@@ -1,10 +1,16 @@
 import pygame
 from level import *
-from constants import Colors
+from constants import Colors, Fonts
 
 # TEST LVL
 test = Level('Tutorial', size=(1382, 778), star_points = [1, 2, 3], time_remaining=60)
-
+# HELPTEXTS
+test.new_label(10, 50, Fonts.BASIC_FONT, "WASD or Arrows to move", Colors.TEXT_COLOR)
+test.new_label(10, 85, Fonts.BASIC_FONT, "Load crates by landing on colored platforms", Colors.TEXT_COLOR)
+test.new_label(10, 120, Fonts.BASIC_FONT, "Drop crates by landing on platforms of their color", Colors.TEXT_COLOR)
+test.new_label(10, 155, Fonts.BASIC_FONT, "Transport as many crates as possible", Colors.TEXT_COLOR)
+test.new_label(10, 190, Fonts.BASIC_FONT, "Land on green platform with stars to finish level", Colors.TEXT_COLOR)
+test.new_label(10, 220, Fonts.BASIC_FONT, "if you don't want to wait for the timer to do so", Colors.TEXT_COLOR)
 # BLOCKS
 test.new_block(935, 0, 50, 650)  # 1
 test.new_block(400, 650, 1300, 50)  # 2

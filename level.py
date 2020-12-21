@@ -1,18 +1,6 @@
 import pygame
 from random import choice
-from constants import Colors, Game_state, Fonts, Text
-
-
-class RectSprite(pygame.sprite.Sprite):
-    def __init__(self, width, height, color = Colors.BLACK, image_path = None):
-        super().__init__()
-        if image_path is None:
-            self.image = pygame.Surface((width, height))
-            self.image.fill(color)
-        else:
-            self.image = pygame.image.load(image_path)
-            self.image = pygame.transform.smoothscale(self.image, (width, height))
-        self.rect = self.image.get_rect()
+from constants import Colors, Game_state, Fonts, Text, RectSprite
 
 
 class Level(RectSprite):
@@ -21,6 +9,7 @@ class Level(RectSprite):
         self.name = str(name)
         self.blocks = []
         self.spawners = []
+        self.labels = []
         self.exit_platform = None
         self.drone_start_pos = drone_start_pos
         self.group = pygame.sprite.Group()
@@ -32,6 +21,11 @@ class Level(RectSprite):
         self.star_points = iter(star_points)
         self.score_to_win = next(self.star_points)
         Game_state.lvl_list.append(self)
+
+    def new_label(self, x, y, font, text, color):
+        label = Text(font, text, color)
+        label.rect.topleft = (x,y)
+        label.add(self.group)
 
     def new_block(self, x, y, width, height):
         self.blocks.append(Block(x, y, width, height, self.group))

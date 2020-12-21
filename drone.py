@@ -1,6 +1,5 @@
 import pygame
-from constants import Game_state
-from levels import RectSprite
+from constants import Game_state, RectSprite
 
 
 def sign(a): return 1 if a > 0 else -1 if a < 0 else 0

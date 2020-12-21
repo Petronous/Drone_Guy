@@ -1,6 +1,5 @@
 import pygame
-from constants import Game_state, Colors, Fonts, avg, Text
-from level import RectSprite
+from constants import Game_state, Colors, Fonts, avg, Text, RectSprite
 from random import randint
 
 if not pygame.get_init():
