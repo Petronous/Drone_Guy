@@ -24,11 +24,6 @@ test.new_text("the TIME you have left and the SCORE you", (1000, 170))
 test.new_text("need to achieve to complete the level", (1000, 200))
 
 test.new_text("Press SPACE to exit the level and get back to the level selection", (700, 320))
-# test.new_text("an exit platform will show up, you might not want to use", (700, 350))
-# test.new_text("it right away, as it unlocks after you get enough score to pass", (700, 380))
-# test.new_text("the level, but you can go for a higher rating if you continue", (700, 410))
-
-
 
 # LVL 2
 lvl2 = Level('Baskets', size=(1382, 778), star_points = [15, 27, 35], time_remaining=180, drone_start_pos = (10, 500))
