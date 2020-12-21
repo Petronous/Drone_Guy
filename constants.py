@@ -15,7 +15,7 @@ class Game_state():
     WIN_H = None
     MENU = None
 
-    
+
     @classmethod
     def add_score(cls, score = 1):
         cls.score += score
@@ -56,3 +56,7 @@ class Fonts():
         'fonts/montserrat-semibold.ttf', TITLE_FONT_SIZE)
     STAR_FONT_BIG = pygame.font.Font('fonts/star_font.ttf', BASE_FONT_SIZE * 2)
     STAR_FONT = pygame.font.Font('fonts/star_font.ttf', BASE_FONT_SIZE)
+
+
+def avg(*args):
+    return sum(args)/len(args)

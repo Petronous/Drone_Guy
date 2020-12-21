@@ -1,5 +1,5 @@
 import pygame
-from constants import Game_state, Colors, Fonts
+from constants import Game_state, Colors, Fonts, avg
 from level import RectSprite
 from random import randint
 
@@ -12,23 +12,44 @@ class Text(pygame.sprite.Sprite):
 
     def __init__(self, font, text, color):
         super().__init__()
+        self.font = font
+        self.color = color
+        self.text = text
         self.image = font.render(text, True, color)
         self.rect = self.image.get_rect()
+
+    def update_text(self, text):
+        text = str(text)
+        if text != self.text:
+            self.text = text
+            self.image = self.font.render(text, True, self.color)
+            n_rect = self.image.get_rect()
+            n_rect.center = self.rect.center
+            self.rect = n_rect
 
 
 class LevelButton(RectSprite):
     def __init__(self, width, height, name, group, pos=(0, 0)):
         super().__init__(width, height, color=Colors.LVL_RECT_COLOR)
 
-        self.text = Text(Fonts.BIGGER_FONT, str(name), Colors.TEXT_COLOR)
+        self.name = Text(Fonts.BIGGER_FONT, str(name), Colors.TEXT_COLOR)
+        stats = Game_state.lvl_stats[self.name.text]
+        self.highscore = Text(Fonts.BIGGER_FONT, str(stats[0]), Colors.TEXT_COLOR)
+        self.stars = Text(Fonts.STAR_FONT_BIG, stats[1] * '*', Colors.TEXT_COLOR)
 
         self.rect.topleft = pos
-        self.text.rect.midtop = self.rect.midtop
+
+        self.highscore.rect.center = self.rect.center
+        tx = self.rect.centerx
+        ty = avg(self.rect.top, self.highscore.rect.top)
+        self.name.rect.center = (tx,ty)
+        ty = avg(self.rect.bottom, self.highscore.rect.bottom)
+        self.stars.rect.center = (tx,ty)
 
         self.hover_color = Colors.LVL_RECT_HOVER_COLOR
         self.normal_color = Colors.LVL_RECT_COLOR
 
-        group.add(self, self.text)
+        group.add(self, self.name, self.highscore, self.stars)
 
     def is_over(self, pos):
         if self.rect.collidepoint(pos):
@@ -37,11 +58,14 @@ class LevelButton(RectSprite):
             return False
 
     def update(self, mouse_pos):
-        self.color = self.normal_color
+        stats = Game_state.lvl_stats[self.name.text]
+        self.highscore.update_text(stats[0])
+        self.stars.update_text(stats[1]*'*')
 
+        self.color = self.normal_color
         if self.is_over(mouse_pos):
             self.color = self.hover_color
-        
+
         self.image.fill(self.color)
 
 
@@ -56,6 +80,11 @@ class Menu(RectSprite):
         self.group.add(self.title)
 
     def make_rects(self):
+        # UPDATE IN CASE STH CHANGED
+        self.lvl_buttons = []
+        self.group = pygame.sprite.Group()
+        self.title.add(self.group)
+
         # LEVEL COUNT
         LVL_COUNT = len(Game_state.lvl_list)
 
@@ -90,36 +119,20 @@ class Menu(RectSprite):
 
             button = LevelButton(BUTTON_W, BUTTON_H, lvl.name, self.group, (button_x, button_y))
 
-            highscore = Text(Fonts.BIGGER_FONT, str(Game_state.lvl_stats[lvl.name][0]), Colors.TEXT_COLOR)
-            stars = Text(Fonts.STAR_FONT_BIG, Game_state.lvl_stats[lvl.name][1] * '*', Colors.TEXT_COLOR)
-
-            highscore.rect.center = button.rect.center
-            text_rect = button.text.rect.union(highscore.rect)
-            stars.rect.midbottom = button.rect.midbottom
-            text_rect = text_rect.union(stars.rect)
-            text_rect.center = button.text.rect.center
-
-            text_surf = pygame.Surface(text_rect.size)
-            text_surf.fill(Colors.LVL_RECT_COLOR)
-            text_surf.blits([(x.image, x.rect) for x in (button.text, highscore, stars)])
-
-            self.group.add(highscore, stars)
-
             self.lvl_buttons.append(button)
 
 
     def update(self):
-        for button in self.lvl_buttons:
-            button.update(pygame.mouse.get_pos())
-
-    
+        # for button in self.lvl_buttons:
+        #     button.update(pygame.mouse.get_pos())
+        self.group.update(pygame.mouse.get_pos())  # Will be invalid if Text
+                                                   # gets an update function
 
 
 def draw_menu():
     """Basic UI for lvl select aka menu"""
     # Game_state.lvl_rects = []
     Game_state.DISP_SURF.fill(Colors.BG_COLOR)
-    Game_state.MENU.make_rects()
     Game_state.MENU.update()
     Game_state.MENU.group.draw(Game_state.DISP_SURF)
 

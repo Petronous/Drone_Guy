@@ -36,6 +36,7 @@ def main():
 
     # CREATING A CLASS MENU INSTANCE
     Game_state.MENU = graphics.Menu(width=Game_state.WIN_W, height=Game_state.WIN_H)
+    Game_state.MENU.make_rects()
 
     # GAME LOOP
     while True:
@@ -143,6 +144,7 @@ def game_over_handle_input():
                 Game_state.room = "menu"
                 save_level_stats()
                 load_level_stats()
+                Game_state.MENU.make_rects()
                 return
 
     graphics.draw_game_over()
