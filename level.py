@@ -94,7 +94,6 @@ class Platform(RectSprite):
             self.update_label()
 
     def update_label(self):
-        print(self.text, self.label.text)
         self.label.update_text(self.text)
 
 

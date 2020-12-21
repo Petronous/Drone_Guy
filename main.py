@@ -20,7 +20,6 @@ def main():
     DISP_INFO = pygame.display.Info()
     Game_state.WIN_W = round(DISP_INFO.current_w * 0.9)
     Game_state.WIN_H = round(DISP_INFO.current_h * 0.9)
-    print(Game_state.WIN_W, Game_state.WIN_H)
 
     # INIT
     Game_state.DISP_SURF = pygame.display.set_mode(
