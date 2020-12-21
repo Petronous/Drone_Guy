@@ -85,7 +85,7 @@ def menu_handle_input():
     choice = None
     for button in Game_state.MENU.lvl_buttons:
         if button.is_over(pygame.mouse.get_pos()):
-            for event in pygame.event.get(pygame.MOUSEBUTTONUP):
+            for event in pygame.event.get(pygame.MOUSEBUTTONDOWN):
                 choice = Game_state.MENU.lvl_buttons.index(button)
 
     # RUN CHOSEN LVL

@@ -77,3 +77,30 @@ lvl3.new_block(1032, 600, 200, 50)  # 13
 
 # PLATFORMS
 lvl3.make_exit_platform(691, 500, 50, 50) # Exit platform
+
+# LVL 4
+lvl4 = Level(name="Slalom", time_remaining=180, star_points=[5, 9, 13], size=(1382, 778), drone_start_pos=(1282, 275))
+
+# SPAWNERS
+lvl4.new_spawner(25, 100, 100, 30, (255, 0, 0)) # 1
+lvl4.new_spawner(25, 708, 100, 30, (0, 255, 0)) # 2
+lvl4.new_spawner(1312, 100, 100, 30, (0, 0, 255)) # 3
+lvl4.new_spawner(1312, 708, 100, 30, (255, 255, 0)) # 4
+
+# BLOCKS
+lvl4.new_block(200, 0, 50, 80) # 1
+lvl4.new_block(400, 90, 50, 80) # 2
+lvl4.new_block(1000, 0, 50, 80) # 3
+lvl4.new_block(1000, 170, 150, 50) # 4
+lvl4.new_block(1000, 490, 150, 50)  # 5
+lvl4.new_block(1000, 540, 50, 130) # 6
+lvl4.new_block(400, 648, 50, 130) # 7
+lvl4.new_block(200, 540, 50, 130) # 8
+lvl4.new_block(0, 170, 1000, 370) # 9
+lvl4.new_block(600, 0, 50, 80)  # 10
+lvl4.new_block(800, 90, 50, 80)  # 11
+lvl4.new_block(600, 540, 50, 130)  # 12
+lvl4.new_block(800, 648, 50, 130)  # 13
+
+# EXIT PLATFORM
+lvl4.make_exit_platform(1182, 325, 200, 50)

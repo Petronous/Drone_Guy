@@ -37,7 +37,7 @@ class LevelButton(RectSprite):
 
     def update(self, mouse_pos):
         stats = Game_state.lvl_stats[self.name.text]
-        
+
         if stats[0] > 0:
             highscore = stats[0]
         else:
@@ -81,7 +81,7 @@ class Menu(RectSprite):
         Y_GAP = round(Game_state.WIN_H * 0.0025)
 
         # BUTTONS PER ONE ROW, ONE COLUMN
-        BUTTONS_PER_ROW = 3
+        BUTTONS_PER_ROW = 4
         BUTTONS_PER_COL = max(round(LVL_COUNT / BUTTONS_PER_ROW), 1)
 
         # BUTTON WIDTH AND HEIGHT
