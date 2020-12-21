@@ -22,11 +22,6 @@ class Level(RectSprite):
         self.score_to_win = next(self.star_points)
         Game_state.lvl_list.append(self)
 
-    def new_label(self, x, y, font, text, color):
-        label = Text(font, text, color)
-        label.rect.topleft = (x,y)
-        label.add(self.group)
-
     def new_block(self, x, y, width, height):
         self.blocks.append(Block(x, y, width, height, self.group))
 
