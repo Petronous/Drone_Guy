@@ -102,10 +102,8 @@ class Menu(RectSprite):
 
 
     def update(self):
-        # for button in self.lvl_buttons:
-        #     button.update(pygame.mouse.get_pos())
-        self.group.update(pygame.mouse.get_pos())  # Will be invalid if Text
-                                                   # gets an update function
+        self.group.update(pygame.mouse.get_pos())  # Need to be changed if Text
+                                                   # required args as well
 
 
 def draw_menu():
@@ -129,31 +127,13 @@ def draw_drone(Game_state, drone):
 def draw_level(Game_state, level, drone):
     Game_state.DISP_SURF.fill(Colors.BG_COLOR)
     Game_state.curr_lvl.image.fill(Colors.LVL_BG_COLOR)
-    WIN_W, WIN_H = Game_state.curr_lvl.image.get_size()
-
-    # UI
-    txt_group = pygame.sprite.Group()
-    txt = Text(Fonts.BASIC_FONT,
-               f"Score: {Game_state.score} / {Game_state.curr_lvl.score_to_win}", Colors.TEXT_COLOR)
-    txt.rect.topright = (WIN_W - 10, 10)
-    txt_group.add(txt)
-
-    txt = Text(Fonts.BASIC_FONT,
-               f"Health: {round(Game_state.drone.health) * '|'}", Colors.TEXT_COLOR)
-    txt.rect.topleft = (10, 10)
-    txt_group.add(txt)
-
-    txt = Text(Fonts.BASIC_FONT,
-               f"Time left: {round(level.time_remaining)}", Colors.TEXT_COLOR)
-    txt.rect.topright = (WIN_W - 10, 40)
-    txt_group.add(txt)
-
-    txt_group.draw(Game_state.curr_lvl.image)
 
     # Drawing the level
     level.group.update()
     level.group.draw(Game_state.curr_lvl.image)
     draw_drone(Game_state, drone)
+    Game_state.lvl_UI_group.update()
+    Game_state.lvl_UI_group.draw(Game_state.curr_lvl.image)
 
     x, y = 0, 0
     if drone.damage > 1:
@@ -209,3 +189,29 @@ def resize_levelsurf():
     diff_x, diff_y = REAL_W/WIN_W, REAL_H/WIN_H
     zoom = min(diff_x, diff_y)
     return pygame.transform.smoothscale(Game_state.curr_lvl.image, (int(WIN_W*zoom), int(WIN_H*zoom)))
+
+def make_lvl_UI():
+    WIN_W, WIN_H = Game_state.curr_lvl.image.get_size()
+    Game_state.lvl_UI_group = pygame.sprite.Group()
+
+    s_func = lambda: f"Score: {Game_state.score} / {Game_state.curr_lvl.score_to_win}"
+    score = Text(Fonts.BASIC_FONT, s_func(), Colors.TEXT_COLOR, mode = "topright", text_func = s_func)
+    score.rect.topright = (WIN_W - 10, 10)
+    Game_state.lvl_UI_group.add(score)
+
+    h_func = lambda: f"Health: {round(Game_state.drone.health) * '|'}"
+    health = Text(Fonts.BASIC_FONT, h_func(), Colors.TEXT_COLOR, mode = "topleft", text_func = h_func)
+    health.rect.topleft = (10, 10)
+    Game_state.lvl_UI_group.add(health)
+
+    h2_func = lambda: f"{round(100 - Game_state.drone.health) * '|'}"
+    health2 = Text(Fonts.BASIC_FONT, h2_func(), Colors.RED, mode = "topright", text_func = h2_func)
+    health2.rect.topright = health.rect.topright
+    Game_state.lvl_UI_group.add(health2)
+
+    t_func = lambda: f"Time left: {round(Game_state.curr_lvl.time_remaining)}"
+    t_rem = Text(Fonts.BASIC_FONT, t_func(), Colors.TEXT_COLOR, mode = "topright", text_func = t_func)
+    t_rem.rect.topright = (WIN_W - 10, 40)
+    Game_state.lvl_UI_group.add(t_rem)
+
+    Game_state.lvl_UI_group.update()

@@ -14,7 +14,7 @@ class Game_state():
     WIN_W = None
     WIN_H = None
     MENU = None
-
+    lvl_UI_group = None
 
     @classmethod
     def add_score(cls, score = 1):
@@ -37,6 +37,7 @@ class Colors():
     BLACK = (0, 0, 0)
     GRAY = (100, 100, 100)
     GREEN = (0, 255, 0)
+    RED = (255, 0, 0)
     FINISH_GREEN = (67, 170, 139)
     BG_COLOR = BLACK
     LVL_BG_COLOR = (50, 50, 50)
@@ -61,13 +62,15 @@ class Fonts():
 class Text(pygame.sprite.Sprite):
     """Creates a sprite containing the text"""
 
-    def __init__(self, font, text, color):
+    def __init__(self, font, text, color, mode = "center", text_func = None):
         super().__init__()
         self.font = font
         self.color = color
         self.text = text
         self.image = font.render(text, True, color)
         self.rect = self.image.get_rect()
+        self.mode = mode
+        self.text_func = text_func
 
     def update_text(self, text):
         text = str(text)
@@ -75,8 +78,14 @@ class Text(pygame.sprite.Sprite):
             self.text = text
             self.image = self.font.render(text, True, self.color)
             n_rect = self.image.get_rect()
-            n_rect.center = self.rect.center
+            if self.mode == "center": n_rect.center = self.rect.center
+            elif self.mode == "topright": n_rect.topright = self.rect.topright
+            else: n_rect.topleft = self.rect.topleft
             self.rect = n_rect
+
+    def update(self, *args):
+        if self.text_func is not None:
+            self.update_text(self.text_func())
 
 
 def avg(*args):

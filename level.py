@@ -59,6 +59,7 @@ class Level(RectSprite):
         Game_state.curr_lvl.star_points = iter(Game_state.curr_lvl.star_ratings)
         Game_state.curr_lvl.score_to_win = next(Game_state.curr_lvl.star_points)
 
+
 class Block(RectSprite):
     def __init__(self, x, y, width, height, group):
         super().__init__(width, height, color = Colors.GRAY)

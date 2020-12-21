@@ -99,6 +99,8 @@ def menu_handle_input():
         Game_state.drone.pos_x, Game_state.drone.pos_y = Game_state.curr_lvl.drone_start_pos
         Game_state.score = 0
 
+        graphics.make_lvl_UI()
+
 
 def lvl_handle_input():
     Game_state.curr_lvl.time_remaining -= Game_state.FPS_CLOCK.get_time() / 1000
