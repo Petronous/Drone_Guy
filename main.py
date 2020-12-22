@@ -45,7 +45,7 @@ def main():
         handle_key_press()
 
         pygame.display.update()
-        pygame.event.get()
+        pygame.event.clear()
 
         Game_state.FPS_CLOCK.tick(FPS)
 
@@ -115,31 +115,25 @@ def lvl_handle_input():
         return
 
     # HANDLE EVENTS
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                Game_state.curr_lvl.end_level()
-            if event.key == pygame.K_UP or event.key == pygame.K_w:
-                Game_state.drone.control_v = -1
-            if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                Game_state.drone.control_v = 1
-            if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                Game_state.drone.control_h = -1
-            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                Game_state.drone.control_h = 1
+    for event in pygame.event.get(pygame.KEYDOWN):
+        if event.key == pygame.K_SPACE:
+            Game_state.curr_lvl.end_level()
+        pygame.event.post(event)
 
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP or event.key == pygame.K_w:
-                Game_state.drone.control_v = 0
-            if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                Game_state.drone.control_v = 0
-            if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                Game_state.drone.control_h = 0
-            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                Game_state.drone.control_h = 0
+    pressed = pygame.key.get_pressed()
+    if pressed[pygame.K_UP] or pressed[pygame.K_w]:
+        Game_state.drone.control_v = -1
+    elif pressed[pygame.K_DOWN] or pressed[pygame.K_s]:
+        Game_state.drone.control_v = 1
+    else:
+        Game_state.drone.control_v = 0
 
-        else:
-            pygame.event.post(event)
+    if pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
+        Game_state.drone.control_h = -1
+    elif pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
+        Game_state.drone.control_h = 1
+    else:
+        Game_state.drone.control_h = 0
 
     Game_state.drone.update()
     graphics.draw_level(Game_state, Game_state.curr_lvl, Game_state.drone)
